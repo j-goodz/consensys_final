@@ -1,0 +1,36 @@
+      bountyList: [
+        {
+        "bountyId": 1,
+        "bountyPoster": "0x0123",  
+        "title": "first post title",  
+        description: "first post desscription",  
+        amount: 5,  
+        state: 0,  
+        submissionCount: 1,  
+        submissions: [
+            {
+            submissionId: 1,
+            hunter: "0x0123",
+            body: "submission 1 text",
+            status: 0
+            }
+          ]    
+        },
+        {
+        bountyId: 2,
+        bountyPoster: "0x0123",  
+        title: "second post title",  
+        description: "second post desscription",  
+        amount: 6,  
+        state: 0,  
+        submissionCount: 1,  
+        submissions: [
+            {
+            submissionId: 1,
+            hunter: "0x0123",
+            body: "submission 1 text",
+            status: 0
+            }
+          ]    
+        }
+      ]
