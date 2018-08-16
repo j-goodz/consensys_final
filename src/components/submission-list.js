@@ -1,9 +1,9 @@
 import React from 'react';
-import SubmissionListItem from './bounty-list-item';
+import SubmissionListItem from './submission-list-item';
 
 const SubmissionList = (props) => {
-	const submissionListItems = props.bList.map((bList) => {
-		return <SubmissionListItem key={bList.bountyId} bItem={bList} />
+	const submissionListItems = props.sList.map((sList) => {
+		return <SubmissionListItem key={sList.bountyId} bItem={sList} />
 	});
 
 	return (

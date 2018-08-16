@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
-import SimpleStorageContract from '../build/contracts/SimpleStorage.json'  //remove this later, as well as code for it below 
+//import myBountyContract from '../build/contracts/SimpleStorage.json'  //remove this later, as well as code for it below 
+import myBountyContract from '../build/contracts/MyBounty.json'  //remove this later, as well as code for it below 
 import getWeb3 from './utils/getWeb3'
 import { BrowserRouter, Route, Switch, Link } from 'react-router-dom';
 import BountyList from './components/bounty-list';
 import NewBounty from './components/new-bounty';
 import Bounty from './components/bounty';
+import SubmissionList from './components/submission-list';
 
 import './css/oswald.css'
 import './css/open-sans.css'
@@ -18,7 +20,7 @@ class App extends Component {
     this.state = {
       storageValue: 0,
       web3: null,
-      myAccount: "",
+      wallet: null,
       testList: [ 1, 2, 3 ],
 
       bountyList: [
@@ -83,55 +85,77 @@ class App extends Component {
      * Normally these functions would be called in the context of a
      * state management library, but for convenience I've placed them here.
      */
+    // const contract = require('truffle-contract')
+    // const simpleStorage = contract(SimpleStorageContract)
+    // simpleStorage.setProvider(this.state.web3.currentProvider)
+
     const contract = require('truffle-contract')
-    const simpleStorage = contract(SimpleStorageContract)
-    simpleStorage.setProvider(this.state.web3.currentProvider)
+    const myBounty = contract(myBountyContract)
+    myBounty.setProvider(this.state.web3.currentProvider)
 
     // Declaring this for later so we can chain functions on SimpleStorage.
-    var simpleStorageInstance
+    var myBountyInstance
 
     // Get accounts.
     this.state.web3.eth.getAccounts((error, accounts) => {
-      simpleStorage.deployed().then((instance) => {
-        simpleStorageInstance = instance
+      myBounty.deployed().then((instance) => {
+        myBountyInstance = instance
 
         // Stores a given value, 5 by default.
-        return simpleStorageInstance.set(5, {from: accounts[0]})
+        return myBountyInstance.set(5, {from: accounts[0]})
       }).then((result) => {
         // Get the value from the contract to prove it worked.
-        return simpleStorageInstance.get.call(accounts[0])
+        return myBountyInstance.get.call(accounts[0])
       }).then((result) => {
         // Update state with the result.
         return this.setState({ storageValue: result.c[0] })
       })
     })
+    console.log("Bounty Board list: ", this.state.bountyList);
+    console.log("My Wallet: ", this.state.web3.eth.accounts[0]);
+    console.log("My Wallet 2: ", this.state.web3.eth.accounts);
+
+    this.setState({ storageValue: 3 });
+    this.setState({ wallet: this.state.web3.eth.accounts[0]});
+
+    console.log("My Wallet 3: ", this.state.wallet);
+
+    //var mywallet = this.state.web3.eth.accounts[0];
+    //this.state.setState({ wallet: this.state.web3.eth.accounts[0] });
+
+    //console.log("Wallet address: ",this.state.wallet);
+    //this.state.web3.eth.getAccounts(accounts => console.log(accounts[0]))
+    //this.state.web3.eth.getAccounts(console.log);
+    //this.web3.eth.getAccounts(function(err, res){ console.log(res); });
+
+    //   this.state.web3.setState({wallet: accounts[0]});
+    //console.log({instance});
   }
 
   render() {
-    console.log("Bounty Board list: ", this.state.bountyList);
     return (
       <div className="App">
         <BrowserRouter>
           <div>
         <nav className="navbar pure-menu pure-menu-horizontal">
-            <Link to="/" className="pure-menu-heading pure-menu-link">Main Bounty Board</Link>
-            <Link to="/my_bounties" className="pure-menu-heading pure-menu-link">My Bounties</Link>
-            <Link to="/my_submissions" className="pure-menu-heading pure-menu-link">My Submissions</Link>
-            <Link to="/new_bounty" className="pure-menu-heading pure-menu-link">Post New Bounty</Link>
+            <Link to="/"                className="pure-menu-heading pure-menu-link">Main Bounty Board</Link>
+            <Link to="/my_bounties"     className="pure-menu-heading pure-menu-link">My Bounties</Link>
+            <Link to="/my_submissions"  className="pure-menu-heading pure-menu-link">My Submissions</Link>
+            <Link to="/new_bounty"      className="pure-menu-heading pure-menu-link">Post New Bounty</Link>
         </nav>
 
         <main className="container">
             <br />
-            <div className="header text-xs-right"><b>Meta Mask Account: </b></div>
-              
+            <div className="header text-xs-right"><b>Meta Mask Account: {this.state.wallet} </b></div>
+
                 <div>
 
                   <Switch>
-                    <Route exact path="/bounty/:id" render={()=><Bounty />}/>                  
-                    <Route path="/new_bounty" component={NewBounty}/>
-                    <Route exact path="" render={()=><BountyList bList={this.state.bountyList} />}/>
-                    <Route path="/my_bounties" render={()=><BountyList bList={this.state.bountyList} />}/>
-                    <Route path="/my_submissions" render={()=><BountyList bList={this.state.bountyList} />}/>
+                    <Route exact  path="/bounty/:id"      render={()=><Bounty bItem={this.state.bountyList} />}/>                  
+                    <Route        path="/new_bounty"      component={NewBounty} />
+                    <Route exact  path=""                 render={()=><BountyList bList={this.state.bountyList} />}/>
+                    <Route        path="/my_bounties"     render={()=><BountyList bList={this.state.bountyList} />}/>
+                    <Route        path="/my_submissions"  render={()=><SubmissionList sList={this.state.bountyList} />}/>
                   </Switch>
                 </div>
               
