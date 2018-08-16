@@ -1,7 +1,7 @@
 import  React, { Component } from 'react';
 //import { Link } from 'react-router-dom';
 import Submit from '../components/submit';
-import SubmissionList from '../components/submission-list';
+//import SubmissionList from '../components/submission-list';
 //import SubmissionListItem from '../components/submission-list-item';
 
 
@@ -11,20 +11,16 @@ class Bounty extends Component {
 //		return <SubmissionListItem key={sList.bountyId} bItem={sList} />
 //	});
 
-
 	// const bountyItem = props.bItem[1] => {
 	// 	return <SubmissionListItem key={bItem.bountyId} bItem={sList} />
 	// });
 
 	//console.log("Props from new-bounty: ", this.props);
 					// <SubmissionList bList={this.props.bountyList} />
-
 	render() {
-		
 		return (
 			<div>
 				<br /><br />
-
 					Bounty Poster:<br /><br />
 					Bounty Title:<br /><br />
 					Bounty Description:<br /><br />
@@ -36,12 +32,9 @@ class Bounty extends Component {
 
 					Submission List
 
-		
-
 			</div>
 		);
 	}
 };
-
 
 export default Bounty;

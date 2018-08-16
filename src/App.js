@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
-//import myBountyContract from '../build/contracts/SimpleStorage.json'  //remove this later, as well as code for it below 
-import myBountyContract from '../build/contracts/MyBounty.json'  //remove this later, as well as code for it below 
+import myBountyContract from '../build/contracts/MyBounty.json'  
 import getWeb3 from './utils/getWeb3'
 import { BrowserRouter, Route, Switch, Link } from 'react-router-dom';
 import BountyList from './components/bounty-list';
@@ -91,7 +90,9 @@ class App extends Component {
 
     const contract = require('truffle-contract')
     const myBounty = contract(myBountyContract)
+    //myBounty.setProvider(this.state.web3.currentProvider)
     myBounty.setProvider(this.state.web3.currentProvider)
+    //const provider = new Web3.providers.HttpProvider("http://localhost:8545");
 
     // Declaring this for later so we can chain functions on SimpleStorage.
     var myBountyInstance
@@ -111,14 +112,16 @@ class App extends Component {
         return this.setState({ storageValue: result.c[0] })
       })
     })
-    console.log("Bounty Board list: ", this.state.bountyList);
+    this.setState({ wallet: this.state.web3.eth.accounts[0]});    
+
     console.log("My Wallet: ", this.state.web3.eth.accounts[0]);
-    console.log("My Wallet 2: ", this.state.web3.eth.accounts);
+    console.log("Bounty Board List: ", this.state.bountyList);
+    //console.log("web3.version: ", this.state.web3.version.getNetwork(function(err,res){console.log(res)}));
+    console.log("window.web3.currentProvider: ", window.web3.currentProvider);
+    console.log("this.state.web3: ", this.state.web3);
 
-    this.setState({ storageValue: 3 });
-    this.setState({ wallet: this.state.web3.eth.accounts[0]});
-
-    console.log("My Wallet 3: ", this.state.wallet);
+    // console.log("My Wallet 2: ", this.state.web3.eth.accounts);
+    // console.log("My Wallet 3: ", this.state.wallet);
 
     //var mywallet = this.state.web3.eth.accounts[0];
     //this.state.setState({ wallet: this.state.web3.eth.accounts[0] });
@@ -130,6 +133,26 @@ class App extends Component {
 
     //   this.state.web3.setState({wallet: accounts[0]});
     //console.log({instance});
+
+    this.state.web3.version.getNetwork((err, netId) => {
+  switch (netId) {
+    case "1":
+      console.log('This is mainnet')
+      break
+    case "2":
+      console.log('This is the deprecated Morden test network.')
+      break
+    case "3":
+      console.log('This is the ropsten test network.')
+      break
+    default:
+      console.log('This is an unknown network.')
+  }
+});
+
+      //console.log('this.state.web3.eth.net.getNetworkType(): ', this.state.web3.eth.net.getNetworkType());
+
+
   }
 
   render() {
@@ -146,7 +169,7 @@ class App extends Component {
 
         <main className="container">
             <br />
-            <div className="header text-xs-right"><b>Meta Mask Account: {this.state.wallet} </b></div>
+            <div className="header text-xs-right"><b>Web3 Account: {this.state.wallet} </b></div>
 
                 <div>
 
