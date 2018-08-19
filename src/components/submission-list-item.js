@@ -3,10 +3,10 @@ import { Link } from 'react-router-dom';
 
 
 
-const SubmissionListItem = ({bItem}) => {
+const SubmissionListItem = ({sItem}) => {
 	//const = bountyItem = props.list
 	//console.log("bounty list item - bItem: ", bItem)
-	const bountyTitle = bItem.title;
+	const bountyTitle = sItem.title;
 	return (
 		<li className="list-group-item">
 			<Link to="/">{bountyTitle}</Link>

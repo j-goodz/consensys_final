@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import myBountyContractABI from '../build/contracts/MyBounty.json'  
+import myBountyContract from '../build/contracts/MyBounty.json'  
 import getWeb3 from './utils/getWeb3'
 import { BrowserRouter, Route, Switch, Link } from 'react-router-dom';
 import BountyList from './components/bounty-list';
@@ -17,13 +17,11 @@ class App extends Component {
     super(props)
 
     this.state = {
-      storageValue: null,
+      storageValue: 0,
       web3: null,
       wallet: null,
-      testList: [],
-      bountyCount: null,
-      accountBalance: null,
-      myBountyInstance: null,
+      testList: [ 1, 2, 3 ],
+
       bountyList: [
         {
         bountyId: 1,
@@ -88,92 +86,50 @@ class App extends Component {
      */
 
     const contract = require('truffle-contract')
-    const myBounty = contract(myBountyContractABI)
+    const myBounty = contract(myBountyContract)
+    //myBounty.setProvider(this.state.web3.currentProvider)
     myBounty.setProvider(this.state.web3.currentProvider)
     //const provider = new Web3.providers.HttpProvider("http://localhost:8545");
 
-    // Declaring this for later so we can chain functions on MyBounty.
+    // Declaring this for later so we can chain functions on SimpleStorage.
     var myBountyInstance
 
-    // Get accounts, provide error return variable and an accounts array variable
+    // Get accounts.
     this.state.web3.eth.getAccounts((error, accounts) => {
-      // Get the instance of the myBounty contract (address?) which is returned and sent to 
-      // a function to set myBountyInstance to the returned instance variable
       myBounty.deployed().then((instance) => {
         myBountyInstance = instance
-        this.setState({ myBountyInstance: instance })
-        // returns a call to the contracts createBounty function, sent with parameters to create the contract
-        //this.state.web3.eth.defaultAccount = this.state.web3.eth.accounts[0]
-       /// this.setState({ web3.eth.defaultAccount: this.state.web3.eth.accounts[0] })
-        //return myBountyInstance.get.call(accounts[0])
-        return myBountyInstance.createBounty("bounty title","bounty desc", 55, {from: accounts[0]})
-        //return myBountyInstance.createBounty("bounty title","bounty desc", 55, accounts)
+
+        // Stores a given value, 5 by default.
+        return myBountyInstance.set(5, {from: accounts[0]})
       }).then((result) => {
-        //var stuff = web3.eth.myBountyInstance
         // Get the value from the contract to prove it worked.
-        //return myBountyInstance.getBalance(accounts[0])
-        //return this.setState({ accountBalance: this.state.web3.getBalance(accounts[0]) })
-        //return this.setState(  { bountyCount:  myBountyInstance.bountyCount.get.call(accounts[0])     }    )
-        //return this.setState(  { bountyCount:  2  }    )
+        return myBountyInstance.get.call(accounts[0])
+      }).then((result) => {
+        // Update state with the result.
         return this.setState({ storageValue: result.c[0] })
-        //return console.log(myBountyInstance.fetchBounty(1))
       })
-    }
-
-   // this.state.myBountyInstance.createBounty("bounty title","bounty desc", 55, {from: this.state.web3.eth.accounts[0]})
-//this.state.setState(  { bountyCount:  2  }    )
-    //myBountyInstance.methods.owner().call().then(console.log);
-   // console.log(myBountyInstance.createBounty("bounty title","bounty desc", 55, {from: accounts[0]}));
-
-
-    //     // Get accounts, provide error return variable and an accounts array variable
-    // this.state.web3.eth.getAccounts((error, accounts) => {
-    //   // Get the instance of the myBounty contract (address?) which is returned and sent to 
-    //   // a function to set myBountyInstance to the returned instance variable
-    //   myBounty.deployed().then((instance) => {
-    //     myBountyInstance = instance
-    //     // returns a call to the contracts createBounty function, sent with parameters to create the contract
-    //     return myBountyInstance.createBounty("bounty title","bounty desc", 55)
-    //   }).then((result) => {
-    //     // Get the value from the contract to prove it worked.
-    //     return myBountyInstance.get.call(accounts[0])
-    //   }).then((result) => {
-    //     // Update state with the result.
-    //     return this.setState({ storageValue: result.c[0] })
-    //   })
-    // }
-
-
-    )
-
-
-
-
-
-   // console.log(myBountyInstance.getBalance(this.state.web3.eth.accounts[0]));
-    //console.log("instance: ",instance);
-
-  //   this.state.web3.getBalance((err, netId) => {
- 
-  // }
-    //this.setState({ accountBalance: this.state.web3.getBalance(this.state.web3.eth.accounts[0]) })
-
-   // this.setState({ wallet: this.state.web3.eth.accounts[0]});    
+    })
+    this.setState({ wallet: this.state.web3.eth.accounts[0]});    
 
     console.log("My Wallet: ", this.state.web3.eth.accounts[0]);
-    console.log("My Wallet Balance: ", this.state.accountBalance);
-
-
-    console.log("App State: ", this.state);
     console.log("Bounty Board List: ", this.state.bountyList);
     //console.log("web3.version: ", this.state.web3.version.getNetwork(function(err,res){console.log(res)}));
     console.log("window.web3.currentProvider: ", window.web3.currentProvider);
     console.log("this.state.web3: ", this.state.web3);
-    console.log("web3.eth.defaultAccount: ", this.state.web3.eth.defaultAccount);
-    console.log("storageValue: ", this.state.storageValue);
-    console.log("bountyCount: ", this.state.bountyCount);
-    console.log("myBountyInstance: ", this.state.myBountyInstance);
 
+    // console.log("My Wallet 2: ", this.state.web3.eth.accounts);
+    // console.log("My Wallet 3: ", this.state.wallet);
+
+    //var mywallet = this.state.web3.eth.accounts[0];
+    //this.state.setState({ wallet: this.state.web3.eth.accounts[0] });
+
+    //console.log("Wallet address: ",this.state.wallet);
+    //this.state.web3.eth.getAccounts(accounts => console.log(accounts[0]))
+    //this.state.web3.eth.getAccounts(console.log);
+    //this.web3.eth.getAccounts(function(err, res){ console.log(res); });
+
+    //   this.state.web3.setState({wallet: accounts[0]});
+    //console.log({instance});
 
     this.state.web3.version.getNetwork((err, netId) => {
   switch (netId) {
