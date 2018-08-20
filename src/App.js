@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import myBountyContractABI from '../build/contracts/MyBounty.json'  
 import getWeb3 from './utils/getWeb3'
 import { BrowserRouter, Route, Switch, Link } from 'react-router-dom';
+import Stringify from 'react-stringify'
+
 import BountyList from './components/bounty-list';
 import NewBounty from './components/new-bounty';
 import Bounty from './components/bounty';
@@ -93,7 +95,7 @@ class App extends Component {
     //const provider = new Web3.providers.HttpProvider("http://localhost:8545");
 
     // Declaring this for later so we can chain functions on MyBounty.
-    var myBountyInstance
+    let myBountyInstance
 
     // Get accounts, provide error return variable and an accounts array variable
     this.state.web3.eth.getAccounts((error, accounts) => {
@@ -106,19 +108,27 @@ class App extends Component {
         //this.state.web3.eth.defaultAccount = this.state.web3.eth.accounts[0]
        /// this.setState({ web3.eth.defaultAccount: this.state.web3.eth.accounts[0] })
         //return myBountyInstance.get.call(accounts[0])
-        return myBountyInstance.createBounty("bounty title","bounty desc", 55, {from: accounts[0]})
-        //return myBountyInstance.createBounty("bounty title","bounty desc", 55, accounts)
-      }).then((result) => {
+        //return myBountyInstance.createBounty("bounty title","bounty desc", 55, {from: accounts[0]})
+        return myBountyInstance.fetchBounty(1)
+        //return this.setState({ testList: myBountyInstance.fetchBounty(1) })
+      })
+      .then((result) => {
+        this.setState({ testList: myBountyInstance.fetchBounty(1) })
         //var stuff = web3.eth.myBountyInstance
         // Get the value from the contract to prove it worked.
         //return myBountyInstance.getBalance(accounts[0])
         //return this.setState({ accountBalance: this.state.web3.getBalance(accounts[0]) })
         //return this.setState(  { bountyCount:  myBountyInstance.bountyCount.get.call(accounts[0])     }    )
         //return this.setState(  { bountyCount:  2  }    )
-        return this.setState({ storageValue: result.c[0] })
+        return this.setState({ storageValue: result })
         //return console.log(myBountyInstance.fetchBounty(1))
+      }).then(() => {
+        return this.setState({ wallet: myBountyInstance.address })
       })
     }
+
+
+   // return this.state.web3.eth.getStorageAt(BountyList, 1)
 
    // this.state.myBountyInstance.createBounty("bounty title","bounty desc", 55, {from: this.state.web3.eth.accounts[0]})
 //this.state.setState(  { bountyCount:  2  }    )
@@ -146,24 +156,8 @@ class App extends Component {
 
     )
 
-
-
-
-
-   // console.log(myBountyInstance.getBalance(this.state.web3.eth.accounts[0]));
-    //console.log("instance: ",instance);
-
-  //   this.state.web3.getBalance((err, netId) => {
- 
-  // }
-    //this.setState({ accountBalance: this.state.web3.getBalance(this.state.web3.eth.accounts[0]) })
-
-   // this.setState({ wallet: this.state.web3.eth.accounts[0]});    
-
     console.log("My Wallet: ", this.state.web3.eth.accounts[0]);
     console.log("My Wallet Balance: ", this.state.accountBalance);
-
-
     console.log("App State: ", this.state);
     console.log("Bounty Board List: ", this.state.bountyList);
     //console.log("web3.version: ", this.state.web3.version.getNetwork(function(err,res){console.log(res)}));
@@ -172,7 +166,7 @@ class App extends Component {
     console.log("web3.eth.defaultAccount: ", this.state.web3.eth.defaultAccount);
     console.log("storageValue: ", this.state.storageValue);
     console.log("bountyCount: ", this.state.bountyCount);
-    console.log("myBountyInstance: ", this.state.myBountyInstance);
+   // console.log("myBountyInstance: ", this.state.myBountyInstance);
 
 
     this.state.web3.version.getNetwork((err, netId) => {
@@ -207,7 +201,22 @@ class App extends Component {
 
         <main className="container">
             <br />
-            <div className="header text-xs-right"><b>Web3 Account: {this.state.wallet} </b></div>
+            <div className="header text-xs-right"><b>Web3 Account: </b> {this.state.wallet}</div>
+            <hr />
+            <div className="header text-xs-right"><b>storage value:  </b></div>
+            <Stringify value={this.state.storageValue} />
+            <hr />
+            Wallet: <Stringify value={this.state.wallet} />
+            <hr />
+            Test List  <Stringify value={this.state.testList} />
+            <hr />
+            bounty inst  <Stringify value={this.state.dd} />
+
+
+
+<hr /><hr />
+
+
 
                 <div>
                   <Switch>
