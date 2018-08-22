@@ -8,7 +8,7 @@ const BountyListItem = ({bItem}) => {
 	//console.log("bounty list item - bItem: ", bItem)
 	const bountyTitle = bItem.title;
 	return (
-		<li className="list-group-item">
+		<li className="list-group-item" key={bountyTitle}>
 			<Link to="/">{bountyTitle}</Link>
 		</li>
 	);
