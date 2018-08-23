@@ -1,4 +1,6 @@
 /node_modules
+/code_backups
+/tmp-17072ynHch9CHgzFR
 bundle.js
 npm-debug.log
 .DS_Store
