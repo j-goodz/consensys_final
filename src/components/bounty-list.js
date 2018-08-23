@@ -1,17 +1,30 @@
 import React from 'react';
-import BountyListItem from './bounty-list-item';
+import Stringify from "react-stringify";
+import { Link } from "react-router-dom";
 
 const BountyList = (props) => {
-	const bountyListItems = props.bList.map((bList) => {
-		return <BountyListItem  bItem={bList} />
+	//console.log(props)
+	const bountyListItems = props.bountyList.map((bList) => {
+		let index = (props.bountyList.findIndex(k => k === bList) + 1)
+		return ( 	
+					<li key={index}>
+						({index})&nbsp;
+						<Link to={`/bounty/${index}`} className="link" >
+						{bList[1]} 
+					</Link>
+					</li> 
+				)
 	});
 
 	return (
-		<ul className="list-group col-sm-4">
-			{bountyListItems}
-		</ul>
+		<div>
+			<h1>Bounty Board:</h1>
+			<ul>
+				{bountyListItems}
+			</ul>
+			<Stringify value={props} />
+		</div>
 	);
 };
-
 
 export default BountyList;

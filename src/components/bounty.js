@@ -7,21 +7,48 @@ import Stringify from 'react-stringify'
 
 class Bounty extends Component {
 	componentDidMount(){
-		const bId = this.props.match.params.id
+		//const bId = this.props.match.params.id
+	console.log("Mount: ", this.props.state.bountyList)
+    	
 	}
 
 	render() {
 
 
+
+		const bountyId = this.props.match.params.id
+		const bounty = this.props.state.bountyList[bountyId]
+		const bountyDetails = this.props.bountyList.map((deets) => {
+			return (
+						deets[1]
+					)
+		})
+		console.log("Bounty ID: ", bountyId)
+		console.log("Bounty: ", bounty)
+		console.log("this.props.state.bountyList: ", this.props.state.bountyList[bountyId])
+		//console.log("tzz ", this.state.bountyList[bountyId])
     	return (
       		<div>
+
       			<br /><br />
 
-				this.props.bountyList[{this.props.match.params.id}]:<Stringify value={this.props.bountyList[this.props.match.params.id]} />
+				(from bounty.js) bountyList[{bountyId}]:
+				
+				<Stringify value={bounty} />
 				<br /><br />
+
+				<br />Bounty Poster: 
+			
+					
+				<br />Bounty Title: 
+				<br />Bounty Description:
+				<br />Bounty Reward:
+				<br />Bounty State:
+				<br />Number of submissions:
+
 				<Submit />
 				<br />
-				Submission List
+				Submission List:
 			</div>
     	);
   	}

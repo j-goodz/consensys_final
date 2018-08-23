@@ -23,6 +23,7 @@ class App extends Component {
       wallet: null,
       bountyCount: null,
       myBountyInstance: null,
+      submission_text: '',
       bountyList: []
     };
   }
@@ -31,7 +32,7 @@ class App extends Component {
     try {
       //console.log("componentWillMount");
       const results = await getWeb3;
-      console.log("results = ", results);
+      //console.log("results = ", results);
 
       this.setState({ web3: results.web3 });
 
@@ -54,7 +55,7 @@ class App extends Component {
         this.setState({ wallet: myBountyInstance.address });
         this.setState({ myBountyInstance: myBountyInstance });
         //console.log("myBountyInstance: ", myBountyInstance);
-        console.log("myBountyInstance (state): ", this.state.myBountyInstance);
+        //console.log("myBountyInstance (state): ", this.state.myBountyInstance);
 
         const count = await this.state.myBountyInstance.bountyCount()
         //console.log("count: ", count)
@@ -63,7 +64,74 @@ class App extends Component {
         const bountyBoardData = []; // [1,2,3]
           for (let i = 1; i <= this.state.bountyCount; i++) {
             let bounty = await this.state.myBountyInstance.fetchBounty(i)
-            bountyBoardData.push(bounty)
+            let bountySubmissions = []
+
+            console.log(bounty) // 5th index is submission count
+
+            //console.log(bounty[5].toNumber()) // 5th index is submission count
+
+
+            const submissionFields = "bountyId subissionId hunter body status".split(" ")
+            
+
+            let verboseSubmission
+
+            if (bounty[5].toNumber() > 0) {
+              for (let s = 1; s <= bounty[5].toNumber(); s++) {
+                let submission = await this.state.myBountyInstance.fetchSubmission(s,bounty[5].toNumber())
+
+                verboseSubmission = submissionFields.reduce((pre, cur, index) => {
+                  pre[cur] = submission[index]
+                  return pre
+                }, {} )
+
+                console.log("submissionFields ", submissionFields)
+                console.log("submission ", submission)
+                console.log("verboseSubmission ", verboseSubmission)
+
+                // console.log("verboseSubmission ", verboseSubmission)
+                // console.log("verboseSubmission ", verboseSubmission)
+                // console.log("verboseSubmission ", verboseSubmission)
+
+
+            // _bountyId,
+            // _submissionId,
+            // BountyList[_bountyId].submissions[_submissionId].hunter, 
+            // BountyList[_bountyId].submissions[_submissionId].body, 
+            // BountyList[_bountyId].submissions[_submissionId].status
+
+
+                bountySubmissions.push(verboseSubmission)
+
+              }
+            }
+
+            const verboseBounty = { 
+                bountyPoster: bounty[0],
+                title: bounty[1],
+                description: bounty[2],
+                amount: bounty[3],
+                state: bounty[4],
+                submissionCount: bounty[5],
+                submissions: verboseSubmission
+
+              }
+
+              console.log(verboseBounty)
+            // address bountyPoster;
+            // string title;
+            // string description;
+            // uint amount;
+            // BountyState state;
+            // uint submissionCount; // used as solution index for BountyItem's
+            // mapping (uint => HunterSubmission) submissions;
+
+
+            //console.log("bounty: ", bounty)
+            //console.log("bountySubmissions: ", bountySubmissions)
+            //console.log("bountySubmissions.length: ", bountySubmissions.length)
+            //bounty[6] = bountySubmissions // append submissions (with submissions or empty) to the bounty array
+            bountyBoardData.push(verboseBounty)
           }
         this.setState({ bountyList: bountyBoardData })
 
@@ -71,7 +139,7 @@ class App extends Component {
         console.log("Error instantiating contract.", err);
       }
     });
-
+    console.log("App state ", this.state);
   }
 
   render() {
@@ -99,23 +167,23 @@ class App extends Component {
               <br />
               <div className="header text-xs-right">
                 <b>Web3 Account: </b> {this.state.wallet}
+                <hr />
               </div>
-
-              <hr />
               <div>
                 <Switch>
+
                   <Route exact  path="/bounty/:id"
-                    render={({match}) => <Bounty bountyList={this.state.bountyList} match={match} />}
-                  />
-                  <Route        path="/new_bounty" component={NewBounty} />
+                    render={({match}) => <Bounty state={this.state} match={match} />} />
+
+                  <Route        path="/new_bounty" 
+                                render={() => <NewBounty state={this.state} />} />
+
                   <Route exact  path=""
-                    render={() => <BountyList bList={this.state.bountyList} />}
-                  />
-                  <Route        path="/my_bounties" render={() => <BountyList bList={this.state.bountyList} />}
-                  />
-                  <Route        path="/my_submissions" render={() => (
-                      <SubmissionList sList={this.state.bountyList} />
-                    )}
+                    render={() => <BountyList bountyList={this.state.bountyList} />} />
+
+                  <Route        path="/my_bounties" render={() => <BountyList bList={this.state} />} />
+
+                  <Route        path="/my_submissions" render={() => (<SubmissionList sList={this.state} />)}
                   />
                 </Switch>
               </div>
