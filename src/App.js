@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import myBountyContractABI from "../build/contracts/MyBounty.json";
 import getWeb3 from "./utils/getWeb3";
 import { BrowserRouter, Route, Switch, Link } from "react-router-dom";
-import Stringify from "react-stringify";
+// import Stringify from "react-stringify";
 
 import BountyList from "./components/bounty-list";
 import NewBounty from "./components/new-bounty";
@@ -23,7 +23,6 @@ class App extends Component {
       wallet: null,
       bountyCount: null,
       myBountyInstance: null,
-      submission_text: '',
       bountyList: []
     };
   }
@@ -66,7 +65,7 @@ class App extends Component {
             let bounty = await this.state.myBountyInstance.fetchBounty(i)
             let bountySubmissions = []
 
-            console.log(bounty) // 5th index is submission count
+            //console.log(bounty) // 5th index is submission count
 
             //console.log(bounty[5].toNumber()) // 5th index is submission count
 
@@ -85,9 +84,9 @@ class App extends Component {
                   return pre
                 }, {} )
 
-                console.log("submissionFields ", submissionFields)
-                console.log("submission ", submission)
-                console.log("verboseSubmission ", verboseSubmission)
+                //console.log("submissionFields ", submissionFields)
+                //console.log("submission ", submission)
+                //console.log("verboseSubmission ", verboseSubmission)
 
                 // console.log("verboseSubmission ", verboseSubmission)
                 // console.log("verboseSubmission ", verboseSubmission)
@@ -117,7 +116,7 @@ class App extends Component {
 
               }
 
-              console.log(verboseBounty)
+              //console.log(verboseBounty)
             // address bountyPoster;
             // string title;
             // string description;
@@ -139,7 +138,7 @@ class App extends Component {
         console.log("Error instantiating contract.", err);
       }
     });
-    console.log("App state ", this.state);
+    //console.log("App state ", this.state);
   }
 
   render() {
@@ -169,6 +168,7 @@ class App extends Component {
                 <b>Web3 Account: </b> {this.state.wallet}
                 <hr />
               </div>
+              
               <div>
                 <Switch>
 

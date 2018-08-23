@@ -57,9 +57,9 @@ class NewBounty extends Component {
 						<br /><br />
 					Reward Amount<br />
 					<input type="text" 
-					name="bounty_amount" 
-					value={this.state.bounty_amount} 
-					onChange={this.updateField} />
+						name="bounty_amount" 
+						value={this.state.bounty_amount} 
+						onChange={this.updateField} />
 
 					<br /><br />
 

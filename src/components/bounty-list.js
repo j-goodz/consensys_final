@@ -10,7 +10,7 @@ const BountyList = (props) => {
 					<li key={index}>
 						({index})&nbsp;
 						<Link to={`/bounty/${index}`} className="link" >
-						{bList[1]} 
+						{bList.title} 
 					</Link>
 					</li> 
 				)
@@ -22,7 +22,7 @@ const BountyList = (props) => {
 			<ul>
 				{bountyListItems}
 			</ul>
-			<Stringify value={props} />
+			Bounty List State: <Stringify value={props.bountyList} />
 		</div>
 	);
 };
