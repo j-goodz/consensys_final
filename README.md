@@ -68,7 +68,7 @@ Then, open a new terminal window and compile and migrate the contracts using the
 > truffle migrate
 ```
 
-Onces the contracts have been compled and migrated, its time to open the front end UI. If it did not open automatically when running 'npm start', you can enter the url http://localhost:3000 into your browser to interact with the project front end.
+Once the contracts have been compled and migrated, its time to open the front end UI. If it did not open automatically when running 'npm start', you can enter the url http://localhost:3000 into your browser to interact with the project front end.
 
 
 #### Additional Information
@@ -78,56 +78,3 @@ A document called design_pattern_desicions.md located in the project directory e
 A document called avoiding_common_attacks.md located in the project directory explains what measures are taken to ensure contracts are not susceptible to common attacks.
 
 
----------------------------------
-FINISH THIS
----------------------------------
-
-ADD EVENT LISTENER TO UPDATE APP STATE              !@#!@#
-
-
-
-Implement a circuit breaker / emergency stop
-"What other design patterns have you used or 
-not used?"
-
-
-"Explain what measures they’ve taken 
-to ensure that their contracts are not susceptible to 
-common attacks"
-
-
-"At least one of the project contracts includes an
-import from a library or an ethPM package.
-
-If none of the project contracts do, then there is a 
-demonstration contract that does."
-
-
-create a user story (look for example?) giving step by sep instruction to test the dApp for successful results
-
-
--------------------------
-
-
-
-	○  	All tests should be in a tests directory
-■  	Running truffle test should migrate contracts and run your tests
- 
-●  	Smart Contract code should be commented according to the specs in the documentation
- 
-●  	Create at least 5 tests for each smart contract
-	○  	Write a sentence or two explaining what the tests are covering, and explain why you wrote those tests
-
-●  	Implement a library or an EthPM package in your project
-	○  	If your project does not require a library or an EthPM package, demonstrate how you would do that in a contract called LibraryDemo.sol
-
-
-	Stretch requirements (for bonus points, not required):
-○  	Deploy your application onto the Rinkeby test network. Include a document called deployed_addresses.txt that describes where your contracts live on the test net.
-○  	Integrate with an additional service, maybe even one we did not cover in this class
-
-For example:
-■      IPFS
-■      uPort
-■      Ethereum Name Service
-■      Oracle
