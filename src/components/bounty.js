@@ -1,58 +1,110 @@
 import  React, { Component } from 'react';
 //import { Link } from 'react-router-dom';
 import Submit from '../components/submit';
-//import SubmissionList from '../components/submission-list';
-//import SubmissionListItem from '../components/submission-list-item';
+import SubmissionList from '../components/submission-list';
 import Stringify from 'react-stringify'
 
 class Bounty extends Component {
-	componentDidMount(){
-		//const bId = this.props.match.params.id
-		//console.log("Mount: ", this.props.state.bountyList)
-    	
+	// constructor(props){
+	// 	//super(props);
+	// 	//this.handleSubmit=this.handleSubmit.bind(this)
+	// 	this.state = {
+	// 		bountyId: this.props.match.params.id,
+	// 		submissionId: null
+	// 	}
+	// }
+
+	handleAccept(e) {
+		//console.log("handleAccept! Index = ", e)
+		//console.log("e.target.value = ", e.target.value)
+		console.log("e.target.name = ", e.target.name)
+		console.log("e.target.id = ", e.target.id)
+		// console.log("+this.props.match.params.id", +this.props.match.params.id)
+		//console.log("this.state ", this.props)
+
+		const bountyId = e.target.name 
+		const submissionId = e.target.id 
+
+		let action = null
+		if (e.target.value == 'Accept') {
+			action = 0
+		} else if (e.target.value == 'Reject') {
+			action = 1
+		}
+		// console.log("submissionId = ", submissionId)
+		const setSubmissionState = this.state.myBountyInstance.acceptSubmission(bountyId, submissionId)
 	}
+	handleReject() {
 
+	}
+//		console.log(setSbmissionState)
 	render() {
+		//console.log("this.state = ", this.state)
+		console.log("this.props = ", this.props)
+		const bountyId = +this.props.match.params.id
+		const bounty = this.props.state.bountyList[bountyId-1];
 
-		const bountyId = this.props.match.params.id
-		const bounty = this.props.state.bountyList[bountyId]
-		// const bountyDetails = this.props.bountyList.map((deets) => {
-		// 	return (
-		// 				deets[1]
-		// 			)
-		// })
-		//console.log("Bounty ID: ", bountyId)
-		//console.log("Bounty: ", bounty)
-		//console.log("this.props.state.bountyList: ", this.props.state.bountyList[bountyId])
-		//console.log("tzz ", this.state.bountyList[bountyId])
+		const submissionListItems = bounty.submissions.map((sList) => {
+			let index = (bounty.submissions.findIndex(k => k === sList) + 1)
+			let status = ''
+			if (sList.status === 2) { status = "Awaiting Review" } 
+			else if (sList.status === 1) { status = "Rejected" } 
+			else { status = "Accepted" }
+			return ( 	
+						<li key={index}>
+							<b>({index}) Bounty Hunter:</b><br />{sList.hunter} 
+							<br />
+							<b>Submission Status:</b><br />{status}
+							<br />
+							<b>Proposed Solution:</b><br />{sList.body}
+							<br />
+
+								<input id={index} name={bountyId} type="submit" value="Accept" onClick={this.handleAccept}/>
+								<input id={index} name={bountyId}  type="submit" value="Reject" onClick={this.handleAction} />
+
+							<br /><br />
+						</li> 
+					)
+		});	
+
     	return (
       		<div>
+				<h1>Bounty Post:</h1>
 
-      			<br /><br />
+				<b>Bounty Poster:</b><br />
+				{bounty.bountyPoster}<br /><br />
 
-				(from bounty.js) bountyList[{bountyId}]:
+				<b>Bounty Title:</b><br />
+				{bounty.title}<br /><br />
+
+				<b>Bounty Description:</b><br />
+				{bounty.description}<br /><br />
+
+				<b>Bounty Reward:</b><br />
+				{bounty.amount} ETH?<br /><br />
+				
+				<b>Bounty State:</b><br />
+				{ bounty.state === 0 ? 'Open' : 'Closed' }
 				<br /><br />
-				Stringify: <Stringify value={this.props.state.bountyList[1]} />
-				<br /><br />
+				
+				<b>Number of submissions:</b><br />
+				{bounty.submissionCount}
 
-				bounty is: 
-				<Stringify value={bounty} />
-				<br />Bounty Poster: 
-			
-					
-				<br />Bounty Title: 
-				<br />Bounty Description:
-				<br />Bounty Reward:
-				<br />Bounty State:
-				<br />Number of submissions:
+      			<br /><br /><hr />
+      			<h1>Submit Solution:</h1>
+				<Submit myBountyInstance={this.props.state.myBountyInstance} bountyId={bountyId} />
+				
+				<br /><hr />
+				<h1>Submission List:</h1>
+				<ul>
+					{submissionListItems}
+				</ul>
 
-				<Submit />
-				<br />
-				Submission List:
 			</div>
     	);
   	}
 }
 
+			
 
 export default Bounty;

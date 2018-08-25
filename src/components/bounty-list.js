@@ -22,7 +22,7 @@ const BountyList = (props) => {
 			<ul>
 				{bountyListItems}
 			</ul>
-			Bounty List State: <Stringify value={props.bountyList} />
+
 		</div>
 	);
 };

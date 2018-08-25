@@ -11,14 +11,14 @@
     "absolutePath": "/C/Users/Justin/Desktop/CA Course Projects/consensys_final/contracts/TestMyBounty.sol",
     "exportedSymbols": {
       "TestMyBounty": [
-        487
+        507
       ]
     },
-    "id": 488,
+    "id": 508,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 486,
+        "id": 506,
         "literals": [
           "solidity",
           "^",
@@ -34,14 +34,14 @@
         "contractKind": "contract",
         "documentation": "@title TestMyBounty dApp ",
         "fullyImplemented": true,
-        "id": 487,
+        "id": 507,
         "linearizedBaseContracts": [
-          487
+          507
         ],
         "name": "TestMyBounty",
         "nodeType": "ContractDefinition",
         "nodes": [],
-        "scope": 488,
+        "scope": 508,
         "src": "90:34:2"
       }
     ],
@@ -51,14 +51,14 @@
     "absolutePath": "/C/Users/Justin/Desktop/CA Course Projects/consensys_final/contracts/TestMyBounty.sol",
     "exportedSymbols": {
       "TestMyBounty": [
-        487
+        507
       ]
     },
-    "id": 488,
+    "id": 508,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 486,
+        "id": 506,
         "literals": [
           "solidity",
           "^",
@@ -74,14 +74,14 @@
         "contractKind": "contract",
         "documentation": "@title TestMyBounty dApp ",
         "fullyImplemented": true,
-        "id": 487,
+        "id": 507,
         "linearizedBaseContracts": [
-          487
+          507
         ],
         "name": "TestMyBounty",
         "nodeType": "ContractDefinition",
         "nodes": [],
-        "scope": 488,
+        "scope": 508,
         "src": "90:34:2"
       }
     ],
@@ -93,5 +93,5 @@
   },
   "networks": {},
   "schemaVersion": "2.0.1",
-  "updatedAt": "2018-08-23T19:51:29.362Z"
+  "updatedAt": "2018-08-24T20:51:43.744Z"
 }

@@ -1,6 +1,6 @@
 import  React, { Component } from 'react';
 //import { Link } from 'react-router-dom';
-
+import Stringify from "react-stringify";
 
 class NewBounty extends Component {
 	constructor(props){
@@ -18,22 +18,30 @@ class NewBounty extends Component {
 
 	updateField(event) {
 		this.setState({ [ event.target.name ]: event.target.value })
-		console.log(event.target.name)
-
-	 }
+		//console.log(event.target.name)
+	}
 
 	handleSubmit(event) {
 		event.preventDefault();
+		console.log("Sate @ send tx ", this.props.state)
+		const newBounty = this.props.state.myBountyInstance.createBounty(
+			this.state.bounty_title, 
+			this.state.bounty_description, 
+			this.state.bounty_amount
+		)
+		console.log(newBounty)
+		console.log(this.state.web3)
 	}
 
-
 	render() {
-	//console.log(this.props)
-		
+		//console.log(this.props)
+		//console.log(this.props.state.myBountyInstance)
+
 		return (
 			<div>
 				<h1>New Bounty:</h1>
-				
+				Stringify: <Stringify value={this.props.myBountyInstance} />
+
 				<form onSubmit={this.handleSubmit}>
 					Bounty Title<br />
 					<input 
@@ -50,6 +58,7 @@ class NewBounty extends Component {
 
 						style={{height: '200px', width: '400px'}}
 						type="textarea" 
+						rowSpan={10}
 						name="bounty_description" 
 						value={this.state.bounty_description}
 						onChange={this.updateField} />
@@ -59,7 +68,8 @@ class NewBounty extends Component {
 					<input type="text" 
 						name="bounty_amount" 
 						value={this.state.bounty_amount} 
-						onChange={this.updateField} />
+						onChange={this.updateField} 
+						/>
 
 					<br /><br />
 
