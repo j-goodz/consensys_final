@@ -3,20 +3,31 @@
 
 ### Getting Started
 
-This truffle project is a basic Bounty Board dApp where Bounty Posters can post a problem allowing Bounty Hunters to submit solutions. The Bounty Poster can review each submission and either Accept or Reject those submissions. If a submission is Accepted, the Bounty Poster is then prompted to transfer the Bounty Reward Amount to the Bounty Hunter before the Submission is Accepted and the Bounty Status Closed. If a submission is Rejected, the Bounty Status remains Open and Bounty Hunters can continue to submit solutions. 
+This truffle project is a basic bounty board dApp where Bounty Posters can post a problem allowing bounty hunters to submit solutions. The bounty poster can review each submission and either accept or reject those submissions. If a submission is accepted, the bounty poster is then prompted to transfer the bounty reward amount to the bounty hunter before the submission is accepted and the bounty status closed. If a submission is rejected, the bounty atatus remains open and bounty hunters can continue to submit solutions. 
 
 Each Bounty Post contains the following details:
+
 ●  	Bounty Poster Address
+
 ●  	Title
+
 ●  	Description
+
 ●  	Bounty Reward Amount
+
 ●  	Bounty State (Open/Closed)
+
 ●  	Submission Count
+
 ●  	Submissions: A nested list fo each Bounty Post containing the Solutions submitted by Bounty Hunters
 
+
 Each submission (nested within Bounty Posts) contains the following details:
+
 ●  	Bounty Hunter Address
+
 ●  	Solution body text
+
 ●  	Submission Status (Accepted, Rejected or Pending Review)
 
 

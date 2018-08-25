@@ -97,7 +97,7 @@ contract MyBounty {
 
     /** @dev                        Fetches the details for a HunterSubmission solution of a BountyItem.
     *   @param _bountyId            ID/mapping key for a BountyItem.
-    *   @param _submissionnID       ID/mapping key for a HunterSubmission.
+    *   @param _submissionId        ID/mapping key for a HunterSubmission.
     *   @return bountyId            Returns ID/mapping key of the BountyItem.
     *   @return submissionId        Returns ID/mapping key of the HunterSubmission.
     *   @return hunter              Returns hunter address of the HunterSubmission.

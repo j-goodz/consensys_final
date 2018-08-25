@@ -2,12 +2,14 @@ import React, { Component } from "react";
 import myBountyContractABI from "../build/contracts/MyBounty.json";
 import getWeb3 from "./utils/getWeb3";
 import { BrowserRouter, Route, Switch, Link } from "react-router-dom";
-import Stringify from "react-stringify";
+//import Stringify from "react-stringify";
 
 import BountyList from "./components/bounty-list";
 import NewBounty from "./components/new-bounty";
 import Bounty from "./components/bounty";
-import SubmissionList from "./components/submission-list";
+import MyBounties from "./components/my-bounties";
+import MySubmissions from "./components/my-submissions";
+//import SubmissionList from "./components/submission-list";
 
 import "./css/oswald.css";
 import "./css/open-sans.css";
@@ -24,9 +26,13 @@ class App extends Component {
       contractAddr: null,
       bountyCount: null,
       myBountyInstance: null,
-      bountyList: []
+      bountyList: [],
+      events: null
     };
   }
+
+updateBountyList(result) {
+}
 
   // async componentWillMount() {
   async componentDidMount() {
@@ -43,12 +49,11 @@ class App extends Component {
     }
   }
 
+
   instantiateContract() {
-    //this.state.ContractInstance = MyContract.at("0x925d81c01d878899adbb7d38f84ce9d5284fa2e7")
     const contract = require("truffle-contract");
     const myBounty = contract(myBountyContractABI);
     myBounty.setProvider(this.state.web3.currentProvider);
-    //const provider = new Web3.providers.HttpProvider("http://localhost:8545");
 
     this.state.web3.eth.getAccounts(async (error, accounts) => {
       try {
@@ -56,12 +61,8 @@ class App extends Component {
         this.setState({ contractAddr: myBountyInstance.address });
         this.setState({ myBountyInstance: myBountyInstance });
         this.setState({ account: accounts[0] });
-
-
-
-
         //console.log(this.state.web3)
-       // console.log("accounts[0]: ", accounts[0]);
+        // console.log("accounts[0]: ", accounts[0]);
         //console.log("account: ", this.state.account);
         //console.log("contractAddr.address: ", this.state.contractAddr);
         //this.state.web3.eth.defaultAccount = accounts[0]
@@ -72,29 +73,20 @@ class App extends Component {
         defaultAccountWeb3.personal.unlockAccount = defaultAccountWeb3.eth.defaultAccount
         this.setState({ web3: defaultAccountWeb3 })
 
-        //console.log("contractAddr: ", this.state.contractAddr);
-        // console.log("defaultAccountWeb3: ", defaultAccountWeb3);
-        //console.log("myBountyInstance: ", myBountyInstance);
-        //console.log("myBountyInstance (state): ", this.state.myBountyInstance);
-
         const count = await this.state.myBountyInstance.bountyCount()
-        this.setState({ bountyCount: count })
+        this.setState({ bountyCount: count.toNumber() })
 
         const bountyBoardData = []; 
+
           for (let i = 1; i <= this.state.bountyCount; i++) {
             let bounty = await this.state.myBountyInstance.fetchBounty(i)
             const bountySubCount = bounty[5].toNumber()
             let bountySubmissions = []
             let verboseSubmissions = {}
-            //const submissionFields = "bountyId subissionId hunter body status".split(" ")
 
-            //console.log("bounty object = ", bounty)
-           // console.log("bounty object SubCount = ", bountySubCount)
             if (bountySubCount > 0) {
               for (let s = 1; s <= bountySubCount; s++) {
                 let submission = await this.state.myBountyInstance.fetchSubmission(i , s)
-                //console.log("bountyId, submissionId = ", i, " ", s)
-                
                 verboseSubmissions = {
                   bountyId: submission[0].toNumber(),
                   submissionId: submission[1].toNumber(),
@@ -102,8 +94,6 @@ class App extends Component {
                   body: submission[3],
                   status: submission[4].toNumber()
                 }
-
-                //console.log("verboseSubmissions: ", verboseSubmissions)
                 bountySubmissions.push(verboseSubmissions)
               }
             }
@@ -117,12 +107,47 @@ class App extends Component {
                 submissionCount: bounty[5].toNumber(),
                 submissions: bountySubmissions
               }
-            //console.log("bountySubmissions.length: ", bountySubmissions.length)
-            //bounty[6] = bountySubmissions // append submissions (with submissions or empty) to the bounty array
             bountyBoardData.push(verboseBounty)
           }
 
         this.setState({ bountyList: bountyBoardData })
+
+
+        var events = await this.state.myBountyInstance.allEvents({fromBlock: 0, toBlock: 'latest'});
+        //var events = await this.state.myBountyInstance.allEvents({fromBlock: (await this.state.web3.eth.getBlockNumber()), toBlock: 'latest'});
+        this.setState({ events: events })
+
+        // would get all past logs again.
+        this.state.events.get(function(error, logs){ 
+          // console.log("get: ", logs, Error)
+          // console.log(logs)
+        });
+
+        this.state.events.watch(function(error, result){
+           // console.log("allevents.args: ", result.args, error)
+           // console.log("allevents.event: ", result.event, error)
+           // console.log("result.args.bountyId: ", result.args.bountyId.toNumber())
+
+ //          return updateBountyList(result);
+  // let updateBountyList = this.state.bountylist
+  // console.log("updateBountyList: ", updateBountyList)
+  // console.log("this.state.bountyList: ", updateBountyList)
+  // console.log("this.state: ", this.state)
+  // if ( result.event === "CreateBounty" ) { 
+  //   const verboseBounty = { 
+  //   bountyPoster: result.args.bountyPoster,
+  //   title: result.args.title,
+  //   description: result.args.description,
+  //   amount: result.args.amount.toNumber(),
+  //   state: result.args.state.toNumber(),
+  //   //submissionCount: result.args.SubmissionCount.toNumber(),
+  //   //submissions: {}
+  //   }
+  //   updateBountyList[result.args.bountyId.toNumber()] = verboseBounty
+  //   console.log("Updating BountyList!")
+  //   this.setState({ bountyList: updateBountyList })
+  // }
+        });
 
       } catch (err) {
         console.log("Error instantiating contract.", err);
@@ -130,6 +155,8 @@ class App extends Component {
     });
     console.log("App state ", this.state);
   }
+
+
 
   render() {
     //console.log("state: ", this.state )
@@ -162,20 +189,51 @@ class App extends Component {
               </div>
               <div>
                 <Switch>
-
-                  <Route exact  path="/bounty/:id"
-                    render={({match}) => <Bounty state={this.state} myBountyInstance={this.state.myBountyInstance} match={match} />} />
-
-                  <Route        path="/new_bounty" 
-                                render={() => <NewBounty state={this.state} />} />
-
-                  <Route exact  path=""
-                    render={() => <BountyList bountyList={this.state.bountyList} />} />
-
-                  <Route        path="/my_bounties" render={() => <BountyList bList={this.state} />} />
-
-                  <Route        path="/my_submissions" render={() => (<SubmissionList sList={this.state} />)}
+                  <Route 
+                    exact  
+                    path="/my_bounties" 
+                    render={() => <MyBounties 
+                      bountyList={this.state.bountyList}
+                      account={this.state.account} />} 
                   />
+
+
+                  <Route 
+                    exact 
+                    path="/my_submissions" 
+                    render={() => (<MySubmissions 
+                      bountyList={this.state.bountyList} 
+                      bountyCount={this.state.bountyCount} 
+                      account={this.state.account} />)}
+                  />
+
+
+                  <Route 
+                    exact  
+                    path="/bounty/:id"
+                    render={({match}) => <Bounty 
+                      state={this.state} 
+                      myBountyInstance={this.state.myBountyInstance} 
+                      match={match} 
+                      account={this.state.account} />} 
+                  />
+
+
+                  <Route        
+                    path="/new_bounty" 
+                    render={() => <NewBounty 
+                      state={this.state} />}
+                  />
+                  
+
+                  <Route 
+                    exact  
+                    path=""
+                    render={() => <BountyList 
+                      bountyList={this.state.bountyList} />} 
+                  />
+
+
                 </Switch>
               </div>
             </main>

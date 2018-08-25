@@ -1,6 +1,4 @@
 import  React, { Component } from 'react';
-//import { Link } from 'react-router-dom';
-import Stringify from "react-stringify";
 
 class NewBounty extends Component {
 	constructor(props){
@@ -40,8 +38,6 @@ class NewBounty extends Component {
 		return (
 			<div>
 				<h1>New Bounty:</h1>
-				Stringify: <Stringify value={this.props.myBountyInstance} />
-
 				<form onSubmit={this.handleSubmit}>
 					Bounty Title<br />
 					<input 

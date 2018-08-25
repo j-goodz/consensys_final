@@ -1,5 +1,5 @@
 import React from 'react';
-import Stringify from "react-stringify";
+// import Stringify from "react-stringify";
 import { Link } from "react-router-dom";
 
 const BountyList = (props) => {

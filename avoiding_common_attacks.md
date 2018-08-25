@@ -2,7 +2,7 @@ dangers of calling external contracts is that they can take over the control flo
 
 
 
-
+- Implement a circuit breaker / emergency stop = simple moodifiers, as its a fairly simple app
 
 
 Reentrancy

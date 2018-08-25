@@ -1,8 +1,8 @@
 import  React, { Component } from 'react';
 //import { Link } from 'react-router-dom';
 import Submit from '../components/submit';
-import SubmissionList from '../components/submission-list';
-import Stringify from 'react-stringify'
+//import SubmissionList from '../components/submission-list';
+//import Stringify from 'react-stringify'
 
 class Bounty extends Component {
 	// constructor(props){
@@ -26,9 +26,9 @@ class Bounty extends Component {
 		const submissionId = e.target.id 
 
 		let action = null
-		if (e.target.value == 'Accept') {
+		if (e.target.value === 'Accept') {
 			action = 0
-		} else if (e.target.value == 'Reject') {
+		} else if (e.target.value === 'Reject') {
 			action = 1
 		}
 		// console.log("submissionId = ", submissionId)
@@ -44,6 +44,11 @@ class Bounty extends Component {
 		const bountyId = +this.props.match.params.id
 		const bounty = this.props.state.bountyList[bountyId-1];
 
+		const account = this.props.account
+		const bountyPoster = bounty.bountyPoster
+
+		//console.log("bounty.bountyPoster : ", bounty.bountyPoster)
+
 		const submissionListItems = bounty.submissions.map((sList) => {
 			let index = (bounty.submissions.findIndex(k => k === sList) + 1)
 			let status = ''
@@ -58,9 +63,12 @@ class Bounty extends Component {
 							<br />
 							<b>Proposed Solution:</b><br />{sList.body}
 							<br />
-
-								<input id={index} name={bountyId} type="submit" value="Accept" onClick={this.handleAccept}/>
-								<input id={index} name={bountyId}  type="submit" value="Reject" onClick={this.handleAction} />
+							{ account ==  bountyPoster ? 
+								<div>
+									<input id={index} name={bountyId} type="submit" value="Accept" onClick={this.handleAccept}/>
+									<input id={index} name={bountyId}  type="submit" value="Reject" onClick={this.handleAction} />
+						    	</div>
+						    : null }
 
 							<br /><br />
 						</li> 
@@ -90,10 +98,17 @@ class Bounty extends Component {
 				<b>Number of submissions:</b><br />
 				{bounty.submissionCount}
 
-      			<br /><br /><hr />
-      			<h1>Submit Solution:</h1>
-				<Submit myBountyInstance={this.props.state.myBountyInstance} bountyId={bountyId} />
-				
+      			<br />
+
+
+				{ account !==  bountyPoster ? 
+					<div>
+						<br /><hr />
+						<h1>Submit Solution:</h1>
+						<Submit myBountyInstance={this.props.state.myBountyInstance} bountyId={bountyId} />
+						</div>
+				: null }
+
 				<br /><hr />
 				<h1>Submission List:</h1>
 				<ul>
