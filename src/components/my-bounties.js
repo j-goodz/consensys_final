@@ -3,7 +3,7 @@ import Stringify from "react-stringify";
 import { Link } from "react-router-dom";
 
 const MyBounties = (props) => {
-	console.log(props)
+	//console.log(props)
 
 	const bountyList = props.bountyList
 

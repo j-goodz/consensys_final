@@ -1,19 +1,20 @@
 pragma solidity ^0.4.17;
+import 'zeppelin/contracts/token/StandardToken.sol';
 
 /** @title MyBounty dApp */
-contract MyBounty {
-    
+contract MyBounty {                                             // Declaration of MyBounty contract
+    using SafeMath for uint256;                                 // SafeMath library prevents overflow when working with uint                     
     uint public bountyCount;                                    // Acs as index/key of struct mappings
     enum SubmissionStatus {Accepted, Rejected, PendingReview}   // Current status of a HunterSubmission.
     enum BountyState {Open, Closed}                             // Current status of a BountyItem.
 
-    struct HunterSubmission {   
+    struct HunterSubmission {                                   // Declaration of HunterSubmission struct type
         address hunter;                                         // Address of a Bounty Hunter.
         string body;                                            // Solution body of text.
         SubmissionStatus status;                                // Current status of a HunterSubmission.
     }
 
-    struct BountyItem {
+    struct BountyItem {                                         // Declaration of BountyList struct type
         address bountyPoster;                                   // Address of a Bounty Poster.
         string title;                                           // Title of a BountyItem.
         string description;                                     // Description of a BountyItem.
@@ -33,9 +34,9 @@ contract MyBounty {
     event FetchSubmission   (uint bountyId, uint submissionId);
     
     modifier verifyBountyOwner      (uint _bountyId) { require (msg.sender == BountyList[_bountyId].bountyPoster); _; }
-    modifier verifyState            (uint _bountyId) { require(BountyList[_bountyId].state == BountyState.Open); _; }
-    modifier verifyBalance          (uint _bountyId) { require(msg.sender.balance > BountyList[_bountyId].amount); _; }
-    modifier verifyBountyExists     (uint _bountyId) { require(_bountyId <= bountyCount); _; }
+    modifier verifyState            (uint _bountyId) { require (BountyList[_bountyId].state == BountyState.Open); _; }
+    modifier verifyBalance          (uint _bountyId) { require (msg.sender.balance > BountyList[_bountyId].amount); _; }
+    modifier verifyBountyExists     (uint _bountyId) { require (_bountyId <= bountyCount); _; }
     modifier verifySubmissionExists (uint _bountyId, uint submissionId) { require(_bountyId <= BountyList[_bountyId].submissionCount); _; }
     
     /** @dev                        Creates a new BountyItem to which users can submit HunterSubmission solutions.
@@ -60,7 +61,7 @@ contract MyBounty {
     public 
     verifyBountyExists(_bountyId)
     {
-        //require (msg.sender != BountyList[_bountyId].bountyPoster); //prevent bounty owner from submitting his own solution
+        //require (msg.sender != BountyList[_bountyId].bountyPoster); // Prevent Bounty Posters from submitting their own HunterSubmissions
         BountyList[_bountyId].submissionCount++;
         var newSubmission = HunterSubmission(msg.sender, _body, SubmissionStatus.PendingReview);
         BountyList[_bountyId].submissions[BountyList[_bountyId].submissionCount] = newSubmission;
@@ -121,6 +122,7 @@ contract MyBounty {
     
     /** @dev                        Accepts a HunterSubmission and sets the BountyItem state to Closed.
     *   @param _bountyId            ID/mapping key for a BountyItem.
+    *   @param _submissionId        ID/mapping key for a HunterSubmission.
     */
     function acceptSubmission(uint _bountyId, uint _submissionId)
     public payable 

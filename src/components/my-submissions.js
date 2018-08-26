@@ -5,53 +5,69 @@ class MySubmissions extends Component {
 //		console.log(setSbmissionState)
 	render() {
 		//console.log("this.state = ", this.state)
-		console.log("this.props = ", this.props)
+		//console.log("this.props = ", this.props)
 
 		const account = this.props.account
 		let compiledSubList= []
 
-		const submissionListItems = this.props.bountyList.map((bList) => {
-			//console.log("bList: ", bList)
-			if (bList.submissionCount > 0) {
-				let subList = bList.submissions.map((sList) => {
-					//console.log("sList: ", sList)
-					compiledSubList.push(sList)
-				})
-					  // bountyId: submission[0].toNumber(),
-				      //  submissionId: submission[1].toNumber(),
-				      //  hunter: submission[2],
-				      //  body: submission[3],
-				      //  status: submission[4].toNumber()
-			}
+		const filteredSubmissionList = this.props.bountyList.filter(bounty => bounty.submissionCount > 0 && bounty.submissions.some(sub => account === sub.hunter ))
 
-			console.log("compiledSubList: ", compiledSubList)
+		//console.log(filteredSubmissionList)
 
-			const filteredSubList = compiledSubList.filter(function(sItem){
-	  			return sItem.hunter == account; 
-			});
+		// const submissionListItems = this.props.bountyList.map((bList) => {
+		// 	if (bList.submissionCount > 0) {
+		// 		let subList = bList.submissions.map((sList) => {
+		// 			compiledSubList.push(sList)
+		// 		})
+		// 	}
 
-			console.log("filteredSubList: ", filteredSubList)
+		// 	console.log("compiledSubList: ", compiledSubList)
 
-			let index = (filteredSubList.findIndex(k => k === filteredSubList) + 1)
+		// 	const filteredSubList = compiledSubList.filter(function(sItem){
+	 //  			return sItem.hunter == account; 
+		// 	});
+
+		// 	console.log("filteredSubList: ", filteredSubList)
+
+		// 	//let index = (filteredSubList.findIndex(k => k === filteredSubList) + 1)
 			
-			let status = ''
-			if (filteredSubList.status === 2) { status = "Awaiting Review" } 
-			else if (filteredSubList.status === 1) { status = "Rejected" } 
-			else { status = "Accepted" }
-				console.log("filteredSubList.status: ", filteredSubList.status)
-			return ( 	
-						<li key={index}>
-							<b>Bounty ID:</b><br />{filteredSubList.bountyId} 
+			
+		// 		console.log("filteredSubList: ", filteredSubList.status)
+
+
+		// 	return ( 	
+
+		// 			)
+		// });	
+
+		//let index = (filteredSubList.findIndex(k => k === filteredSubList) + 1)
+
+		const submissionListItems = filteredSubmissionList.map((item, index) => {
+			//console.log("item ", item)
+			return item.submissions.map((sub, sIndex) => {
+
+				let status = ''
+				if (sub.status === 2) { status = "Awaiting Review" } 
+				else if (sub.status === 1) { status = "Rejected" } 
+				else { status = "Accepted" }
+
+
+				return (
+						<li key={sub.bountyId+sIndex}>
+							<b>Bounty ID:</b><br />{sub.bountyId} 
 							<br />
-							<b>Submission ID:</b><br />{filteredSubList.submissionId} 
+							<b>Submission ID:</b><br />{sub.submissionId} 
 							<br />
-							<b>Submission Status:</b><br />{filteredSubList.status}
+							<b>Submission Status:</b><br />{status}
 							<br />
-							<b>Proposed Solution:</b><br />{filteredSubList.body}
+							<b>Proposed Solution:</b><br />{sub.body}
 							<br /><br />
-						</li> 
-					)
-		});	
+						</li> 	
+				)
+			})
+		})
+				//console.log("submissionListItem: ", submissionListItems)
+
 
     	return (
       		<div>

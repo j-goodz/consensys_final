@@ -48,7 +48,7 @@ Checkout this repo, install dependencies, then start up the project for review:
 
 
 #### Not Familiar with Git?
-Click [here](https://github.com/jgoodz/consensys_final.git) then download the .zip file. Extract the contents of the zip file, then open your terminal, change to the project directory, and run:
+Click [here](https://github.com/jgoodz/consensys_final/archive/master.zip) then download the .zip file. Extract the contents of the zip file, then open your terminal, change to the project directory, and run:
 
 ```
 > npm install

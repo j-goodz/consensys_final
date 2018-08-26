@@ -1,6 +1,9 @@
 dangers of calling external contracts is that they can take over the control flow
 
 
+Added zeppelin SafeMath to protect agains uints too large or small from impacting Ether payouts
+
+
 
 - Implement a circuit breaker / emergency stop = simple moodifiers, as its a fairly simple app
 
@@ -30,7 +33,4 @@ functions called repeatedly before first invocation of function finished
 
 
 
-
-
-
-chose to not hold custody 
+#### Measures taken to protect against common attacks

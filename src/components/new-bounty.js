@@ -1,4 +1,7 @@
 import  React, { Component } from 'react';
+// import { History } from "react-router-dom";
+import Stringify from 'react-stringify'
+// import _ from 'lodash';
 
 class NewBounty extends Component {
 	constructor(props){
@@ -12,6 +15,7 @@ class NewBounty extends Component {
 
 		this.handleSubmit=this.handleSubmit.bind(this)
 		this.updateField=this.updateField.bind(this)
+		console.log("props - ",props)
 	}
 
 	updateField(event) {
@@ -19,21 +23,37 @@ class NewBounty extends Component {
 		//console.log(event.target.name)
 	}
 
-	handleSubmit(event) {
+	async handleSubmit(event) {
 		event.preventDefault();
-		console.log("Sate @ send tx ", this.props.state)
-		const newBounty = this.props.state.myBountyInstance.createBounty(
-			this.state.bounty_title, 
-			this.state.bounty_description, 
-			this.state.bounty_amount
-		)
-		console.log(newBounty)
-		console.log(this.state.web3)
+
+		const web3 = this.props.state.web3
+		const accountAddr = this.props.state.web3.eth.accounts[0]
+		const contractAddr = this.props.state.myBountyInstance.address
+		const title = this.state.bounty_title 
+		const description = this.state.bounty_description 
+		const amount = this.state.bounty_amount
+
+		var callData = await this.props.state.myBountyInstance.createBounty({title, description, amount})
+
+		console.log("callData - ". callData)
+
+		web3.eth.sendTransaction({
+  			from: accountAddr,
+  			to: contractAddr,
+			value:  web3.toWei(this.state.bounty_amount, "ether"), 
+			data: callData
+			
+        }, function(err, transactionHash) {
+     	if (!err)
+         	console.log(transactionHash + " success"); 
+        	});
+
+		//push('/')
 	}
 
 	render() {
 		//console.log(this.props)
-		//console.log(this.props.state.myBountyInstance)
+		// console.log("this.state -" this.state)
 
 		return (
 			<div>

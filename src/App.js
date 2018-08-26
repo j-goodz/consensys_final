@@ -29,6 +29,8 @@ class App extends Component {
       bountyList: [],
       events: null
     };
+
+    this.instantiateContract = this.instantiateContract.bind(this)
   }
 
 updateBountyList(result) {
@@ -121,6 +123,7 @@ updateBountyList(result) {
         this.state.events.get(function(error, logs){ 
           // console.log("get: ", logs, Error)
           // console.log(logs)
+          //console.log("this.state.bountyList: ", this.state.bountyList)
         });
 
         this.state.events.watch(function(error, result){
@@ -128,10 +131,10 @@ updateBountyList(result) {
            // console.log("allevents.event: ", result.event, error)
            // console.log("result.args.bountyId: ", result.args.bountyId.toNumber())
 
- //          return updateBountyList(result);
+ //          return updateBconsole.log("this.state.bountyList: ", this.state.bountyList)ountyList(result);
   // let updateBountyList = this.state.bountylist
   // console.log("updateBountyList: ", updateBountyList)
-  // console.log("this.state.bountyList: ", updateBountyList)
+         //console.log("this.state.bountyList: ", this.state.bountyList)
   // console.log("this.state: ", this.state)
   // if ( result.event === "CreateBounty" ) { 
   //   const verboseBounty = { 
@@ -153,10 +156,16 @@ updateBountyList(result) {
         console.log("Error instantiating contract.", err);
       }
     });
-    console.log("App state ", this.state);
+    //console.log("App state ", this.state);
   }
 
 
+
+  async contractEvent(err, value) {
+    // Whenver an event is emitted, then do a read to update values
+    // Use this event as a trigger to invoke the get value
+    console.log(JSON.stringify(value, null, 2))
+  }
 
   render() {
     //console.log("state: ", this.state )
@@ -222,7 +231,9 @@ updateBountyList(result) {
                   <Route        
                     path="/new_bounty" 
                     render={() => <NewBounty 
-                      state={this.state} />}
+                      state={this.state} 
+                      //history=
+                      />}
                   />
                   
 

@@ -5,56 +5,84 @@ import Submit from '../components/submit';
 //import Stringify from 'react-stringify'
 
 class Bounty extends Component {
-	// constructor(props){
-	// 	//super(props);
-	// 	//this.handleSubmit=this.handleSubmit.bind(this)
-	// 	this.state = {
-	// 		bountyId: this.props.match.params.id,
-	// 		submissionId: null
-	// 	}
-	// }
+	constructor(props){
+		super(props);
+		// this.handleSubmit=this.handleSubmit.bind(this)
+		this.state = {
+			//bountyId: this.props.match.params.id,
+			//submissionId: null\
+			myBountyInstance: this.props.myBountyInstance
+			//bountyPoster: this.props.bounty.bountyPoster,
+			//bountyId: +this.props.match.params.id,
+			//bounty: this.props.state.bountyList[this.props.match.params.id-1]
+			//this.handleAccept=this.handleAccept.bind(this)
+		}
+	}
 
-	handleAccept(e) {
-		//console.log("handleAccept! Index = ", e)
-		//console.log("e.target.value = ", e.target.value)
+	componentDidMount() {
+		//const myBountyInstance = this.props.myBountyInstance
+	}
+
+	handleAction(e) {
 		console.log("e.target.name = ", e.target.name)
 		console.log("e.target.id = ", e.target.id)
-		// console.log("+this.props.match.params.id", +this.props.match.params.id)
-		//console.log("this.state ", this.props)
-
 		const bountyId = e.target.name 
 		const submissionId = e.target.id 
 
-		let action = null
+		// let action = null
 		if (e.target.value === 'Accept') {
-			action = 0
+			//action = 0
+			const setSubmissionState = this.state.myBountyInstance.acceptSubmission(bountyId, submissionId)
 		} else if (e.target.value === 'Reject') {
-			action = 1
+			//action = 1
+			const setSubmissionState = this.state.myBountyInstance.rejectSubmission(bountyId, submissionId)
 		}
-		// console.log("submissionId = ", submissionId)
-		const setSubmissionState = this.state.myBountyInstance.acceptSubmission(bountyId, submissionId)
+		
 	}
-	handleReject() {
 
-	}
-//		console.log(setSbmissionState)
+	// handleAccept(e) {
+	// 	console.log("e.target.name = ", e.target.name)
+	// 	console.log("e.target.id = ", e.target.id)
+	// 	const bountyId = e.target.name 
+	// 	const submissionId = e.target.id 
+
+	// 	let action = null
+	// 	if (e.target.value === 'Accept') {
+	// 		action = 0
+	// 	} else if (e.target.value === 'Reject') {
+	// 		action = 1
+	// 	}
+	// 	const setSubmissionState = this.state.myBountyInstance.acceptSubmission(bountyId, submissionId)
+	// }
+
+	// handleReject() {
+	// 	const bountyId = e.target.name 
+	// 	const submissionId = e.target.id 
+
+	// 	let action = null
+	// 	if (e.target.value === 'Accept') {
+	// 		action = 0
+	// 	} else if (e.target.value === 'Reject') {
+	// 		action = 1
+	// 	}
+	// 	const setSubmissionState = this.state.myBountyInstance.acceptSubmission(bountyId, submissionId)
+	// }
+
 	render() {
-		//console.log("this.state = ", this.state)
 		console.log("this.props = ", this.props)
 		const bountyId = +this.props.match.params.id
 		const bounty = this.props.state.bountyList[bountyId-1];
-
 		const account = this.props.account
 		const bountyPoster = bounty.bountyPoster
 
-		//console.log("bounty.bountyPoster : ", bounty.bountyPoster)
-
 		const submissionListItems = bounty.submissions.map((sList) => {
 			let index = (bounty.submissions.findIndex(k => k === sList) + 1)
+
 			let status = ''
-			if (sList.status === 2) { status = "Awaiting Review" } 
-			else if (sList.status === 1) { status = "Rejected" } 
-			else { status = "Accepted" }
+			if 			(sList.status === 2) 	{ status = "Awaiting Review" } 
+			else if 	(sList.status === 1) 	{ status = "Rejected" } 
+			else	 							{ status = "Accepted" }
+
 			return ( 	
 						<li key={index}>
 							<b>({index}) Bounty Hunter:</b><br />{sList.hunter} 
@@ -63,13 +91,24 @@ class Bounty extends Component {
 							<br />
 							<b>Proposed Solution:</b><br />{sList.body}
 							<br />
-							{ account ==  bountyPoster ? 
+							{ account ===  bountyPoster && sList.status === 2 ? 
 								<div>
-									<input id={index} name={bountyId} type="submit" value="Accept" onClick={this.handleAccept}/>
-									<input id={index} name={bountyId}  type="submit" value="Reject" onClick={this.handleAction} />
+									<input 
+										id={index} 
+										name={bountyId} 	
+										type="submit" 	
+										value="Accept" 
+										onClick={this.handleAction.bind(this)}
+									/>
+									<input 
+										id={index} 
+										name={bountyId}  
+										type="submit" 	
+										value="Reject" 
+										onClick={this.handleAction.bind(this)} 
+									/>
 						    	</div>
 						    : null }
-
 							<br /><br />
 						</li> 
 					)
@@ -89,19 +128,16 @@ class Bounty extends Component {
 				{bounty.description}<br /><br />
 
 				<b>Bounty Reward:</b><br />
-				{bounty.amount} ETH?<br /><br />
+				{bounty.amount} Ether<br /><br />
 				
 				<b>Bounty State:</b><br />
 				{ bounty.state === 0 ? 'Open' : 'Closed' }
 				<br /><br />
 				
 				<b>Number of submissions:</b><br />
-				{bounty.submissionCount}
+				{bounty.submissionCount}<br />
 
-      			<br />
-
-
-				{ account !==  bountyPoster ? 
+				{ account !== bountyPoster && bounty.state === 0 ? 
 					<div>
 						<br /><hr />
 						<h1>Submit Solution:</h1>
@@ -114,12 +150,9 @@ class Bounty extends Component {
 				<ul>
 					{submissionListItems}
 				</ul>
-
 			</div>
     	);
   	}
 }
-
-			
 
 export default Bounty;
