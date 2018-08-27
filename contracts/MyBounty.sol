@@ -1,4 +1,4 @@
-pragma solidity ^0.4.19;
+pragma solidity ^0.4.24;
 import './SafeMath.sol';
 
 /** @title MyBounty dApp */
@@ -55,6 +55,8 @@ contract MyBounty {                                             // Declaration o
     event RejectSubmission (uint bountyId, uint submissionId);
     event FetchBounty (uint bountyId);
     event FetchSubmission (uint bountyId, uint submissionId);
+    event StopContract (bool isStopped);
+    event ResumeContract (bool isStopped);
     
     modifier verifyBountyOwner (uint _bountyId) { 
         require (msg.sender == BountyList[_bountyId].bountyPoster); _; 
@@ -222,6 +224,7 @@ contract MyBounty {                                             // Declaration o
     */
     function stopContract() public onlyAuthorized() returns (bool) {
         isStopped = true;
+        emit StopContract(isStopped);
         return isStopped;
     }
 
@@ -237,6 +240,7 @@ contract MyBounty {                                             // Declaration o
     */
     function resumeContract() public onlyAuthorized() returns (bool) {
         isStopped = false;
+        emit ResumeContract(isStopped);
         return isStopped;
     }
 
