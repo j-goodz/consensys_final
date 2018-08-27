@@ -1,11 +1,16 @@
 #### Smart contract storage design
 
-The below design for contract storage was chosen to allow flexibility while developing my contrat as well as to keep things clearly defined. When a new contract is created, bountyCount variable is increasd by 1, which acts as the index/mapping key for the BountyItem struct mapping since this data type does not support indexes. Each BountyItem has a nexted mapping called HunterSubmission which contains all the submitted bounty hunter solutions for a BountyItem.
+What other design patterns have you used / not used?
+■  	Why did you choose the patterns that you did?
+■  	Why not others?
+
+
+The below design for contract storage was chosen to allow flexibility while developing my contract as well as to keep things clearly defined. A single contract design was used to lower complexity and attackk surface. When a new bounty is created, bountyCount variable is increasd by 1, which acts as the index/mapping key for the BountyItem struct mapping since this data type does not support indexes. Each BountyItem has a nested mapping called HunterSubmission which contains all the submitted bounty hunter solutions for a BountyItem. Events automatically update the applications state to reflect things in real time. 
 
 
 >uint public bountyCount;                                    // Acs as index/key of struct mappings
 >enum SubmissionStatus {Accepted, Rejected, PendingReview}   // Current status of a HunterSubmission.
->enum BountyState {Open, Closed}                             // Current status of a BountyItem.
+>enum BountyState {Open, Closed}                             // Current state of a BountyItem.
 > 
 >struct HunterSubmission {                                   // Declaration of HunterSubmission struct type
 >    address hunter;                                         // Address of a Bounty Hunter.
@@ -26,47 +31,10 @@ The below design for contract storage was chosen to allow flexibility while deve
 >mapping(uint => BountyItem) public BountyList;    
 
 
-
-
-### State modifying contract functions
-
->function acceptSubmission(uint _bountyId, uint _submissionId) public payable
->verifyState(_bountyId)          					// Do no allow setting state on closed/paid bounties
->verifyBalance(_bountyId)        					// Ensure the bounty owner has enough funds to pay the bounty amount
->verifyBountyOwner(_bountyId)    					// Ensure owner is only one that can call this function
-
-
->function rejectSubmission(uint _bountyId, uint _submissionId) public 
->verifyBountyOwner(_bountyId) verifyState(_bountyId) 
-
->function createBounty(string _title, string _description, uint _bountyAmount) public 
-
->function createSubmission(uint _bountyId, string _body) public
->verifyBountyExists(_bountyId) 						// Ensure the BountyItem exists before adding a submission for it
-
-
-### Read only contracts
-
->function fetchSubmission(uint _bountyId, uint _submissionId) 
->public constant 
->verifyBountyExists(_bountyId)						// Ensure the BountyItem exists before adding a submission for it
->verifySubmissionExists(_bountyId, _submissionId) 	// Ensure the BountyItem has submissions before adding a submission for it
->returns(uint bountyId, uint submissionId, address hunter, string body, SubmissionStatus status)
-
->function fetchBounty(uint _bountyId)
->public constant 
->verifyBountyExists(_bountyId) 						// Ensure the BountyItem exists before adding a submission for it
->returns(address bountyPoster, string title, string description, uint amount, BountyState state, uint submissionCount) 
-
-
-### default payable function to accept erroneous payments made to contract without calling a function
->function() public payable {} Fallback function, which accepts ether when sent to contract
-
-
-
-
-
-
+### UI Interface Notes
+Bounty Posters cannot submit solutions for their own Bounty. 
+Bounty Hunters cannot accept or reject solutions. Only the Bounty Poster can do this.
+Bounty Posters can Accepted or Rejected submissions, from the default state of PendingReview. Once a solution is Accepted, the Bounty is closed and the award is paid out to the Bounty Hunter.
 
 
 

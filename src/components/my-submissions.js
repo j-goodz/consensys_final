@@ -1,49 +1,11 @@
 import  React, { Component } from 'react';
-import Stringify from 'react-stringify'
 
 class MySubmissions extends Component {
-//		console.log(setSbmissionState)
 	render() {
-		//console.log("this.state = ", this.state)
-		//console.log("this.props = ", this.props)
-
 		const account = this.props.account
-		let compiledSubList= []
 
 		const filteredSubmissionList = this.props.bountyList.filter(bounty => bounty.submissionCount > 0 && bounty.submissions.some(sub => account === sub.hunter ))
-
-		//console.log(filteredSubmissionList)
-
-		// const submissionListItems = this.props.bountyList.map((bList) => {
-		// 	if (bList.submissionCount > 0) {
-		// 		let subList = bList.submissions.map((sList) => {
-		// 			compiledSubList.push(sList)
-		// 		})
-		// 	}
-
-		// 	console.log("compiledSubList: ", compiledSubList)
-
-		// 	const filteredSubList = compiledSubList.filter(function(sItem){
-	 //  			return sItem.hunter == account; 
-		// 	});
-
-		// 	console.log("filteredSubList: ", filteredSubList)
-
-		// 	//let index = (filteredSubList.findIndex(k => k === filteredSubList) + 1)
-			
-			
-		// 		console.log("filteredSubList: ", filteredSubList.status)
-
-
-		// 	return ( 	
-
-		// 			)
-		// });	
-
-		//let index = (filteredSubList.findIndex(k => k === filteredSubList) + 1)
-
 		const submissionListItems = filteredSubmissionList.map((item, index) => {
-			//console.log("item ", item)
 			return item.submissions.map((sub, sIndex) => {
 
 				let status = ''
@@ -66,8 +28,6 @@ class MySubmissions extends Component {
 				)
 			})
 		})
-				//console.log("submissionListItem: ", submissionListItems)
-
 
     	return (
       		<div>
@@ -75,10 +35,6 @@ class MySubmissions extends Component {
 				<ul>
 					{submissionListItems}
 				</ul>
-
-				
-				<br /><hr />
-
 			</div>
     	);
   	}

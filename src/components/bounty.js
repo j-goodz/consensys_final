@@ -1,79 +1,49 @@
 import  React, { Component } from 'react';
-//import { Link } from 'react-router-dom';
 import Submit from '../components/submit';
-//import SubmissionList from '../components/submission-list';
-//import Stringify from 'react-stringify'
 
 class Bounty extends Component {
 	constructor(props){
 		super(props);
-		// this.handleSubmit=this.handleSubmit.bind(this)
 		this.state = {
-			//bountyId: this.props.match.params.id,
-			//submissionId: null\
-			myBountyInstance: this.props.myBountyInstance
-			//bountyPoster: this.props.bounty.bountyPoster,
-			//bountyId: +this.props.match.params.id,
-			//bounty: this.props.state.bountyList[this.props.match.params.id-1]
-			//this.handleAccept=this.handleAccept.bind(this)
+			myBountyInstance: this.props.myBountyInstance,
+			bountyState: this.props.state.bountyList[+this.props.match.params.id-1].state
 		}
+		this.componentDidMount = this.componentDidMount.bind(this)
 	}
 
 	componentDidMount() {
 		//const myBountyInstance = this.props.myBountyInstance
+		// this.setState({ bountyState: bounty.state })
 	}
 
-	handleAction(e) {
-		console.log("e.target.name = ", e.target.name)
-		console.log("e.target.id = ", e.target.id)
+	handleAction(e) {	
+		console.log("this.props.state = ", this.props.state)
+		console.log("bountyId = ", e.target.name)
+		console.log("submissionId = ", e.target.id)
 		const bountyId = e.target.name 
 		const submissionId = e.target.id 
 
-		// let action = null
 		if (e.target.value === 'Accept') {
-			//action = 0
 			const setSubmissionState = this.state.myBountyInstance.acceptSubmission(bountyId, submissionId)
+			this.setState({ bountyState: 1 })
+			console.log("setSubmissionState = ", setSubmissionState)	
 		} else if (e.target.value === 'Reject') {
-			//action = 1
 			const setSubmissionState = this.state.myBountyInstance.rejectSubmission(bountyId, submissionId)
+			//this.setState({ bountyState: 0 })
+			console.log("setSubmissionState = ", setSubmissionState)	
 		}
 		
+		// if (!setSubmissionState) {
+		// } 
 	}
 
-	// handleAccept(e) {
-	// 	console.log("e.target.name = ", e.target.name)
-	// 	console.log("e.target.id = ", e.target.id)
-	// 	const bountyId = e.target.name 
-	// 	const submissionId = e.target.id 
-
-	// 	let action = null
-	// 	if (e.target.value === 'Accept') {
-	// 		action = 0
-	// 	} else if (e.target.value === 'Reject') {
-	// 		action = 1
-	// 	}
-	// 	const setSubmissionState = this.state.myBountyInstance.acceptSubmission(bountyId, submissionId)
-	// }
-
-	// handleReject() {
-	// 	const bountyId = e.target.name 
-	// 	const submissionId = e.target.id 
-
-	// 	let action = null
-	// 	if (e.target.value === 'Accept') {
-	// 		action = 0
-	// 	} else if (e.target.value === 'Reject') {
-	// 		action = 1
-	// 	}
-	// 	const setSubmissionState = this.state.myBountyInstance.acceptSubmission(bountyId, submissionId)
-	// }
-
 	render() {
-		console.log("this.props = ", this.props)
 		const bountyId = +this.props.match.params.id
 		const bounty = this.props.state.bountyList[bountyId-1];
 		const account = this.props.account
 		const bountyPoster = bounty.bountyPoster
+
+		console.log("bountyState: ", this.state.bountyState)
 
 		const submissionListItems = bounty.submissions.map((sList) => {
 			let index = (bounty.submissions.findIndex(k => k === sList) + 1)
@@ -91,7 +61,7 @@ class Bounty extends Component {
 							<br />
 							<b>Proposed Solution:</b><br />{sList.body}
 							<br />
-							{ account ===  bountyPoster && sList.status === 2 ? 
+							{ account === bountyPoster && sList.status === 2 && this.state.bountyState !== 1  ? 
 								<div>
 									<input 
 										id={index} 

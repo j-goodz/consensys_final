@@ -1,7 +1,13 @@
 import  React, { Component } from 'react';
 // import { History } from "react-router-dom";
-import Stringify from 'react-stringify'
+// import { browserHistory } from 'react-router-dom'
+
+// import { withRouter } from "react-router-dom";
+
+// import Stringify from 'react-stringify'
 // import _ from 'lodash';
+// import { push } from 'react-router-redux'
+
 
 class NewBounty extends Component {
 	constructor(props){
@@ -15,12 +21,10 @@ class NewBounty extends Component {
 
 		this.handleSubmit=this.handleSubmit.bind(this)
 		this.updateField=this.updateField.bind(this)
-		console.log("props - ",props)
 	}
 
 	updateField(event) {
 		this.setState({ [ event.target.name ]: event.target.value })
-		//console.log(event.target.name)
 	}
 
 	async handleSubmit(event) {
@@ -28,33 +32,25 @@ class NewBounty extends Component {
 
 		const web3 = this.props.state.web3
 		const accountAddr = this.props.state.web3.eth.accounts[0]
-		const contractAddr = this.props.state.myBountyInstance.address
 		const title = this.state.bounty_title 
 		const description = this.state.bounty_description 
 		const amount = this.state.bounty_amount
 
-		var callData = await this.props.state.myBountyInstance.createBounty({title, description, amount})
+		//var callData = await this.props.state.myBountyInstance.createBounty(title, description, amount)
+		await this.props.state.myBountyInstance.createBounty(
+			title, 
+			description, 
+			amount, 
+			{
+				from: accountAddr,
+				value:  web3.toWei(this.state.bounty_amount, "ether")
+			}
+		)
 
-		console.log("callData - ". callData)
-
-		web3.eth.sendTransaction({
-  			from: accountAddr,
-  			to: contractAddr,
-			value:  web3.toWei(this.state.bounty_amount, "ether"), 
-			data: callData
-			
-        }, function(err, transactionHash) {
-     	if (!err)
-         	console.log(transactionHash + " success"); 
-        	});
-
-		//push('/')
+		window.location.replace("http://localhost:3000/")
 	}
 
 	render() {
-		//console.log(this.props)
-		// console.log("this.state -" this.state)
-
 		return (
 			<div>
 				<h1>New Bounty:</h1>
@@ -72,7 +68,7 @@ class NewBounty extends Component {
 					Bounty Description<br />
 					<input 
 
-						style={{height: '200px', width: '400px'}}
+						style={{height: '200px', width: '400px', overflow: 'hidden'}}
 						type="textarea" 
 						rowSpan={10}
 						name="bounty_description" 
@@ -80,19 +76,17 @@ class NewBounty extends Component {
 						onChange={this.updateField} />
 
 						<br /><br />
-					Reward Amount<br />
+					Reward Amount (Ether)<br />
 					<input type="text" 
 						name="bounty_amount" 
 						value={this.state.bounty_amount} 
 						onChange={this.updateField} 
+						type="number"
+						maxLength="5"
 						/>
 
 					<br /><br />
-
               		<input type="submit" value="Post Bounty"/>
-
-
-
 				</form>
 			</div>
 		);

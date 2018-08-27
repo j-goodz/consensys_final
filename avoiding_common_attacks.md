@@ -1,36 +1,12 @@
-dangers of calling external contracts is that they can take over the control flow
-
-
-Added zeppelin SafeMath to protect agains uints too large or small from impacting Ether payouts
-
-
-
-- Implement a circuit breaker / emergency stop = simple moodifiers, as its a fairly simple app
-
-
-Reentrancy
-
-functions called repeatedly before first invocation of function finished
-
-
-    /** @dev                        Accepts a submission and closes the BountyItem state.
-    *   @param _bountyId            ID/mapping key for a BountyItem.
-    *   @return s                   The calculated surface.
-    */
-    function acceptSubmission(uint _bountyId, uint _submissionId)
-    public payable 
-    verifyState(_bountyId) // Do no allow setting state on closed/paid bounties
-    verifyBalance(_bountyId) // Ensure the bounty owner has enough funds to pay the bounty amount
-    verifyBountyOwner(_bountyId) // Ensure owner is only one that can call this function
-    {
-        BountyList[_bountyId].submissions[_submissionId].hunter.transfer(BountyList[_bountyId].amount);
-        BountyList[_bountyId].submissions[_submissionId].status = SubmissionStatus.Accepted;
-        BountyList[_bountyId].state = BountyState.Closed;
-        emit AcceptSubmission(_bountyId, _submissionId);
-        // set all other submissions as rejected?
-    }
-
-
-
-
 #### Measures taken to protect against common attacks
+
+- EthPM library SafeMath was used to protect uint values from underflow / overflow.
+
+- Implemented a circuit breaker / emergency stop using simple moodifiers. Only the contract owner can use this feature.
+
+- In the function acceptSubmission, the transfer of funds is the last sequential execution to mitigate reentrancy attacks.
+
+- No calling of external contracts occcurs in this project. This increases the security as no other controact takes over control flow. 
+
+- Added a default payable function to accept erroneous payments made to contract without calling a function
+> function() public payable {} Fallback function, which accepts ether when sent to contract

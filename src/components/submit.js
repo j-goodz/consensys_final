@@ -4,20 +4,15 @@ import  React, { Component } from 'react';
 class Submit extends Component {
 	constructor(props){
 		super(props);
-
 		this.state = {
 			submission_text: ''
 		}
-
 		this.handleSubmit=this.handleSubmit.bind(this)
 		this.updateField=this.updateField.bind(this)
 	}
 
-
 	updateField(event) {
 		this.setState({ [ event.target.name ]: event.target.value })
-		//console.log(this.props)
-		//console.log(event.target.name)
 	 }
 
 	handleSubmit(event) {
@@ -25,14 +20,11 @@ class Submit extends Component {
 		const newSubmission = this.props.myBountyInstance.createSubmission(
 			this.props.bountyId, 
 			this.state.submission_text
-//		console.log(newSubmission)
 		)
-//		console.log(this.state.web3)
+		console.log(newSubmission)
+		this.setState({ submission_text: '' })
 	}
 
-// call createSubmission
-// update state or wait for event ?
-	
 	render() {
 		return (
 			<div>

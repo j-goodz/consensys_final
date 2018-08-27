@@ -7,28 +7,18 @@ This truffle project is a basic bounty board dApp where Bounty Posters can post 
 
 Each Bounty Post contains the following details:
 
-●  	Bounty Poster Address
-
-●  	Title
-
-●  	Description
-
-●  	Bounty Reward Amount
-
-●  	Bounty State (Open/Closed)
-
-●  	Submission Count
-
-●  	Submissions: A nested list fo each Bounty Post containing the Solutions submitted by Bounty Hunters
-
+- Bounty Poster Address
+- Title
+- Description
+- Bounty Reward Amount
+- Bounty State (Open/Closed)
+- Submission Count
+- Submissions: A nested list fo each Bounty Post containing the Solutions submitted by Bounty Hunters
 
 Each submission (nested within Bounty Posts) contains the following details:
-
-●  	Bounty Hunter Address
-
-●  	Solution body text
-
-●  	Submission Status (Accepted, Rejected or Pending Review)
+- Bounty Hunter Address
+- Solution body text
+- Submission Status (Accepted, Rejected or Pending Review)
 
 
 ### Setup
@@ -80,6 +70,16 @@ Then, open a new terminal window and compile and migrate the contracts using the
 ```
 
 Once the contracts have been compled and migrated, its time to open the front end UI. If it did not open automatically when running 'npm start', you can enter the url http://localhost:3000 into your browser to interact with the project front end.
+
+
+#### Testing process
+
+- Using your default Account 1 in Meta mask, create a new bounty postings.
+- Create a second account, Account 2, in Meta Mask and reload the MyBounty dApp (refresh browser @ http://localhost:8545) to ensure web3 picks up the new account.
+- Using Meta Mask Account 2, Create 2 new submissions for the bounty initially posted using Meta Mask Account 1. 
+- Swtich back to Meta Mask Account 1. You are not the bounty poster again and now have the authority to accept and reject submissions created with Acount 2.
+- Click on the posted bounty and reject the first submission. Notice the submission status changes and the bounty is still Open.
+- Now accept the second submission which will prompt you to pay out the bounty reward amount to the bounty hunter (Account 2). The bounty state should be set from Open to Closed and no more changes can be made to that bounty posting. 
 
 
 #### Additional Information
