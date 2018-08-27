@@ -31,11 +31,47 @@ The below design for contract storage was chosen to allow flexibility while deve
 >mapping(uint => BountyItem) public BountyList;    
 
 
-### UI Interface Notes
-Bounty Posters cannot submit solutions for their own Bounty. 
-Bounty Hunters cannot accept or reject solutions. Only the Bounty Poster can do this.
-Bounty Posters can Accepted or Rejected submissions, from the default state of PendingReview. Once a solution is Accepted, the Bounty is closed and the award is paid out to the Bounty Hunter.
+#### Restricting Access
 
+- Bounty Posters cannot submit solutions for their own Bounty. (createSubmission function)
+- Bounty Posters can Accepted or Rejected submissions, from the default state of PendingReview (acceptSubmission and rejectSubmission functions). Once a solution is Accepted, the bounty is closed and the award is paid out to the Bounty Hunter.
+- Bounty Hunters cannot accept or reject solutions. Only the Bounty Poster can do this.
+
+
+#### Circuit breaker
+
+This project a uses custom isStopped value check modifier that acts as circuit breaker / emergency stop. This feature is controlled by the contract owner and this owner is set on contract deployment. The following functions utilize this security feature:
+
+- createBounty
+- createSubmission
+- fetchBounty
+- fetchSubmission
+- acceptSubmission
+- rejectSubmission
+
+
+#### Modifiers
+
+// This modifier ensures the called is the actual bounty owner.
+verifyBountyOwner 
+    
+// This modifier ensures the state of the bounty is open if changes are to be made to it.
+verifyState
+
+// Ensure the bounty poster has enough funds to pay the bounty amount.
+verifyBalance
+
+// Makes sure the call is to an existing bounty.
+verifyBountyExists
+
+// Makes sure the call is to an existing bounty submission.
+verifySubmissionExists
+    
+// Ensures the isStopped boolean is false before allowing the function to execute.
+stoppedInEmergency
+
+// Ensures onlly the contract owner can call functions with this modifier.
+onlyAuthorized
 
 
 

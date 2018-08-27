@@ -75,7 +75,7 @@ Once the contracts have been compled and migrated, its time to open the front en
 #### Testing process
 
 - Using your default Account 1 in Meta mask, create a new bounty postings.
-- Create a second account, Account 2, in Meta Mask and reload the MyBounty dApp (refresh browser @ http://localhost:8545) to ensure web3 picks up the new account.
+- Create a second account, Account 2, in Meta Mask and reload the MyBounty dApp (refresh browser @ http://localhost:3000) to ensure web3 picks up the new account.
 - Using Meta Mask Account 2, Create 2 new submissions for the bounty initially posted using Meta Mask Account 1. 
 - Swtich back to Meta Mask Account 1. You are not the bounty poster again and now have the authority to accept and reject submissions created with Acount 2.
 - Click on the posted bounty and reject the first submission. Notice the submission status changes and the bounty is still Open.

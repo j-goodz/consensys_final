@@ -50,9 +50,26 @@ updateBountyList(result) {
       this.setState({ web3: results.web3 });
       this.instantiateContract();
 
+      var account = this.web3.eth.accounts[0];
+      this.accountInterval = setInterval(function() {
+        console.log("Current account: ", this.state.account)
+        if (this.web3.eth.accounts[0] !== account) {
+          account = this.web3.eth.accounts[0];
+          this.setState({ account: this.web3.eth.accounts[0] })
+
+        }
+      }, 500);
+
+
+
     } catch (err) {
       console.log("Error finding web3.", err);
     }
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.accountInterval)
+
   }
 
   // eventListener(err, value){
@@ -179,7 +196,7 @@ updateBountyList(result) {
             })
             bItem.submissions = updateSubmissions
             bItem.state = 1
-            
+
             return bItem
           } 
 
@@ -220,6 +237,7 @@ updateBountyList(result) {
     }
     
 
+
   instantiateContract() {
     const contract = require("truffle-contract");
     const myBounty = contract(myBountyContractABI);
@@ -228,6 +246,8 @@ updateBountyList(result) {
     this.state.web3.eth.getAccounts(async (error, accounts) => {
       try {
         const myBountyInstance = await myBounty.deployed();
+
+        
 
         myBountyInstance.CreateBounty(this.CreateBounty)
         myBountyInstance.CreateSubmission(this.CreateSubmission)
@@ -290,7 +310,14 @@ updateBountyList(result) {
 
 
   render() {
-    //console.log("state: ", this.state )
+    console.log("state: ", this.state )
+
+    if (this.state.web3 === null ) return <div>Loading...</div> 
+
+//    console.log("web3.eth.getTransactionCount: ", this.state.web3.eth.getTransactionCount )
+//    console.log("this.state.web3.currentProvider: ", this.state.web3.currentProvider )
+    
+
     return (
       <div className="App">
         <BrowserRouter>
@@ -316,6 +343,13 @@ updateBountyList(result) {
                 <b>Contract Address: </b> {this.state.contractAddr}
                 <br />
                 <b>Web3 Account: </b> {this.state.account}
+                <br />
+                <b>this.state.web3.currentProvider: </b> <stringify value={this.state.web3.currentProvider} />
+                <br />
+                
+
+
+
                 <hr />
               </div>
               <div>
@@ -377,5 +411,4 @@ updateBountyList(result) {
   }
 }
 
-              // Stringify: <Stringify value={this.state.bountyList} />
 export default App;

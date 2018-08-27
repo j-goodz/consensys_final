@@ -4,8 +4,12 @@ import './SafeMath.sol';
 /** @title MyBounty dApp */
 contract MyBounty {                                             // Declaration of MyBounty contract
 
+    constructor() public {
+        owner = msg.sender;                                     // Sets the owner of contract on initial deployment
+    }
+
     using SafeMath for uint256;                                 // SafeMath library prevents overflow when working with uint                     
-    address owner = msg.sender;                                 // Specifies the owner of contract on initial deployment
+    address owner;                                              // Specifies the owner address of the contract
     bool isStopped = false;                                     // Determins contracts emergency stopped state (circuit breaker)
     uint public bountyCount;                                    // Acs as index/key of struct mappings
     enum SubmissionStatus {Accepted, Rejected, PendingReview}   // Current status of a HunterSubmission.
@@ -224,7 +228,7 @@ contract MyBounty {                                             // Declaration o
     /** @dev                        Enables contract emergency stop / circuit breaker. Only callable by contract owner. 
     *   @return isStopped           Returns boolean value of isStopped when contract owner providing the ownner status.
     */
-    function checkStopContract() public onlyAuthorized() returns (bool) {
+    function checkStopContract() public onlyAuthorized() view returns (bool) {
         return isStopped;
     }
 
