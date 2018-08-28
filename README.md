@@ -87,13 +87,13 @@ Account 2 - Brave - [Download here](https://brave.com/download/)
 
 #### Example walkthrough of MyBounty dApp:
 
-Once you have your environment setup and you complee the steps in the Run a local development blockchain section, you can use the blow as a basic stepped approach to test MyBounty dApp.
+Once you have your environment setup and you complete the steps in the 'Run a local development blockchain section', you can use the below walkthrough as a basic stepped approach to test MyBounty dApp.
 
 - First load the dApp @ http://localhost:3000.
-- Using the default Meta Mask Account 1 (Chrome), click "Post New Bounty" to create a new bounty posting. Only you can accept or reject submissions to this bounty.
+- Using the default Meta Mask Account 1 (Chrome), click "Post New Bounty" to create a new bounty posting. Only you (current account) can accept or reject submissions to this bounty.
 - Using Account 2 (Brave), navigate to the dApp homepage http://localhost:3000 and click one of the new bounties posted. 
 - Create a few new submissions for the bounty. Notice the UI updates by using events to sync the blockchain state to the UI state. Because this account did not create the bounty, you can only view the submissions after they are submitted.
-- Now using Account 1 (Chrome), review one of the posted submissions, either accepting or rejecting it. If you reject a submission, bounty hunters can still submit solutions. If you accept the submission as the bounty poster, the submission is accepted and you will be prompted to send the bounty reward transaction. Once accepted, the bounty state is set to Closed and the new submission form is disabled.
+- Now using Account 1 (Chrome), review one of the posted submissions, either accepting or rejecting it. If you reject a submission, bounty hunters can still submit solutions. If you accept the submission as the bounty poster, the submission is accepted and you will be prompted to send the bounty reward transaction. Once accepted, the bounty state is set to closed and the new submission form is disabled.
 
 
 #### Additional Information

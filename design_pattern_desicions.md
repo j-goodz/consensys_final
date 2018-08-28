@@ -1,7 +1,7 @@
 #### Smart contract storage design
 
 
-The below design for contract storage was chosen to allow flexibility while developing my contract as well as to keep things clearly defined. A single contract design was used to lower complexity and attackk surface. When a new bounty is created, bountyCount variable is increasd by 1, which acts as the index/mapping key for the BountyItem struct mapping since this data type does not support indexes. Each BountyItem has a nested mapping called HunterSubmission which contains all the submitted bounty hunter solutions for a BountyItem. Events automatically update the applications state to reflect things in real time. 
+The below design for contract storage was chosen to allow flexibility while developing my contract as well as to keep things clearly defined. A single contract design was used to lower complexity and attackk surface. When a new bounty is created, bountyCount variable is increasd by 1, which acts as the index/mapping key for the BountyItem struct mapping since this data type does not support indexes. Each BountyItem has a nested mapping called HunterSubmission which contains all the submitted bounty hunter solutions for a BountyItem. Events automatically update the applications state to reflect displayed values in real time. 
 
 ```
 uint public bountyCount;                                    // Acts as index/key of struct mappings
@@ -30,22 +30,23 @@ mapping(uint => BountyItem) public BountyList;
 #### Restricting Access
 
 - Bounty Posters cannot submit solutions for their own Bounty. (createSubmission function)
-- Bounty Posters can Accepted or Rejected submissions, from the default state of PendingReview (acceptSubmission and rejectSubmission functions). Once a solution is Accepted, the bounty is closed and the award is paid out to the Bounty Hunter.
+- Bounty Posters can Accepted or Rejected submissions, from the default state of PendingReview (by calling acceptSubmission and rejectSubmission functions). Once a solution is Accepted, the bounty is closed and the award is paid out to the Bounty Hunter.
 - Bounty Hunters cannot accept or reject solutions. Only the Bounty Poster can do this.
 
 
 #### The Circuit Breaker or Emergency Stop Pattern
 
-This proect includes an emergency stop feature allowing the contract owner to pause function execution. This can be reverted once an risks to the contract or dApp ave been mitigaed.
+This project uses an Ownable contract with an emergency stop feature allowing the contract owner to pause function execution. This can be disabled at any point by the contract owner.
+
 
 #### Library Usage
 
-Used Openzeppelin solidity in both contracts for ownership, whitelist, pasueability. Also have used SafeMath to make sure there wont be integer owerflows and underflows.
+EthPM library SafeMath was used in this project to protect uint values from Integer Overflow and Underflow. This library is imported from OpenZeppelin.
 
 
 #### Circuit breaker / emergency stop feature / contract execution pause
 
-This project a uses custom isStopped value check modifier that acts as circuit breaker / emergency stop. This feature is controlled by the contract owner and this owner is set on contract deployment. The following functions utilize this security feature:
+This project a uses a isStopped boolean value check modifier that acts as circuit breaker / emergency stop. This feature is controlled by the contract owner and this owner is set on contract deployment. The following functions utilize this security feature:
 
 - createBounty
 - createSubmission
@@ -57,11 +58,11 @@ This project a uses custom isStopped value check modifier that acts as circuit b
 
 #### Modifiers
 
-verifyBountyOwner - This modifier ensures the called is the actual bounty owner.
+verifyBountyOwner - This modifier ensures the caller is the actual bounty owner.
     
-verifyState - This modifier ensures the state of the bounty is open if changes are to be made to it.
+verifyState - This modifier ensures the state of the bounty is open if before state are to be made to it.
 
-verifyBalance - Ensure the bounty poster has enough funds to pay the bounty amount.
+verifyBalance - Ensures the bounty poster has enough funds to pay the bounty amount.
 
 verifyBountyExists - Makes sure the call is to an existing bounty.
 
@@ -69,7 +70,7 @@ verifySubmissionExists - Makes sure the call is to an existing bounty submission
     
 stoppedInEmergency - Ensures the isStopped boolean is false before allowing the function to execute.
 
-onlyAuthorized - Ensures onlly the contract owner can call functions with this modifier.
+onlyAuthorized - Ensures only the contract owner can call functions using this modifier.
 
 
 
