@@ -113,7 +113,7 @@ updateBountyList(result) {
           
       })
 
-      console.log("newSubmission updateBountyList: ", updateBountyList)
+      //console.log("newSubmission updateBountyList: ", updateBountyList)
       this.setState({ bountyList: updateBountyList })
     }
 
@@ -146,7 +146,7 @@ updateBountyList(result) {
     }
     
     RejectSubmission (err, value) {
-      console.log("RejectSubmission: ", JSON.stringify(value, null, 2))
+      //console.log("RejectSubmission: ", JSON.stringify(value, null, 2))
       const updateBountyList = this.state.bountyList.map((bItem, index) => {
           if ((index+1) === value.args.bountyId.toNumber()) { 
             const updateSubmissions = bItem.submissions.map((sItem) => {
