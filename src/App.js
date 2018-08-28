@@ -50,16 +50,15 @@ updateBountyList(result) {
       this.setState({ web3: results.web3 });
       this.instantiateContract();
 
-      var account = this.web3.eth.accounts[0];
-      this.accountInterval = setInterval(function() {
-        console.log("Current account: ", this.state.account)
-        if (this.web3.eth.accounts[0] !== account) {
-          account = this.web3.eth.accounts[0];
-          this.setState({ account: this.web3.eth.accounts[0] })
+      // var account = this.web3.eth.accounts[0];
+      // this.accountInterval = setInterval(function() {
+      //   console.log("Current account: ", this.state.account)
+      //   if (this.web3.eth.accounts[0] !== account) {
+      //     account = this.web3.eth.accounts[0];
+      //     this.setState({ account: this.web3.eth.accounts[0] })
 
-        }
-      }, 500);
-
+      //   }
+      // }, 500);
 
 
     } catch (err) {
@@ -72,14 +71,8 @@ updateBountyList(result) {
 
   }
 
-  // eventListener(err, value){
-  //   console.log("Event received: ", JSON.stringify(value, null, 2))
-  // }
-
     CreateBounty (err, value) {
       let updateBountyList = this.state.bountyList
-      console.log("CreateBounty: ", JSON.stringify(value, null, 2))
-      console.log("updateBountyList: ", updateBountyList)
 
       let verboseNewBounty = {
         bountyId: value.args.bountyId.toNumber(),
@@ -97,18 +90,6 @@ updateBountyList(result) {
     }
 
     CreateSubmission (err, value) {
-      console.log("CreateSubmission Event: ", JSON.stringify(value, null, 2))
-
-      // const updateBountyList = this.state.bountyList.map((bItem, index) => {
-      //     if ((index+1) === value.args.bountyId.toNumber()) { 
-      //       const updateSubmissions = [...bItem.submissions, value.args]
-      //       bItem.submissions = updateSubmissions
-      //       return bItem
-      //     } else {
-      //       return bItem
-      //     }
-      // })
-
 
       const updateBountyList = this.state.bountyList.map((bItem, index) => {
           if ((index+1) === value.args.bountyId.toNumber()) { 
@@ -134,50 +115,9 @@ updateBountyList(result) {
 
       console.log("newSubmission updateBountyList: ", updateBountyList)
       this.setState({ bountyList: updateBountyList })
-
-              // if (sList.submissionId === value.args.submissionId.toNumber()) {
-              // } else {
-              //   updateSubmissions.push(sList)
-              // }
-/*            updateSubmissions.push({
-              bountyId: value.args.bountyId.toNumber(),
-              submissionId: value.args.submissionId.toNumber(),
-              hunter: value.args.hunter,
-              body: value.args.body,
-              status: value.args.status.toNumber()
-            })*/
-      // let updateBountyList = this.state.bountyList // works
-      // let updateBounty = this.state.bountyList[value.args.bountyId.toNumber()] // doesnt work, undefined
-      // console.log("updateBounty: ", updateBounty)  // updateBounty:  undefined
-      
-      // console.log("updateBountyList: ", updateBountyList)  // works
-      // console.log("value.args.bountyId: ", value.args.bountyId.toNumber()) // works
-      // console.log("updateBountyList[1]: ", updateBountyList[value.args.bountyId.toNumber()]) // doesnt work - updateBountyList[1]:  undefined
-      // console.log("updateBountyList.submissions: ", updateBountyList.submissions) // doesnt work
-
-      // let updateSubmissionList = updateBountyList[value.args.bountyId].submissions
-      // console.log("updateSubmissionList: ", updateSubmissionList)
-      // // console.log("this.state.bountyList: ", this.state.bountyList)
-
-      // let verboseNewSubmission = {
-      //   bountyId: value.args.bountyId,
-      //   submissionId: value.args.submissionId,
-      //   hunter: value.args.hunter,
-      //   body: value.args.body,
-      //   status: value.args.status 
-      // }
-      // console.log("verboseNewSubmission: ", verboseNewSubmission)
-
-      // updateSubmissionList.submissions.push(verboseNewSubmission)
-      // updateBountyList[value.args.bountyId].submissions = updateSubmissionList
-
-      // // updateBountyList[value.args.submissionId].submissions.push(verboseNewSubmission)
-      // this.setState({ bountyList: updateBountyList })
-
     }
 
     AcceptSubmission (err, value) {
-    // console.log("AcceptSubmission: ", JSON.stringify(value, null, 2))
 
       const updateBountyList = this.state.bountyList.map((bItem, index) => {
           if ((index+1) === value.args.bountyId.toNumber()) { 
@@ -200,12 +140,6 @@ updateBountyList(result) {
             return bItem
           } 
 
-          // let newBItem = bItem
-          // newBItem.state = 1
-          // console.log("updating state to 1")
-          // console.log("newBItem: ", newBItem)
-          // return newBItem
-          // return bItem
       })
       this.setState({ bountyList: updateBountyList })
 
@@ -246,8 +180,6 @@ updateBountyList(result) {
     this.state.web3.eth.getAccounts(async (error, accounts) => {
       try {
         const myBountyInstance = await myBounty.deployed();
-
-        
 
         myBountyInstance.CreateBounty(this.CreateBounty)
         myBountyInstance.CreateSubmission(this.CreateSubmission)
@@ -310,13 +242,9 @@ updateBountyList(result) {
 
 
   render() {
-    console.log("state: ", this.state )
+    //console.log("state: ", this.state )
 
     if (this.state.web3 === null ) return <div>Loading...</div> 
-
-//    console.log("web3.eth.getTransactionCount: ", this.state.web3.eth.getTransactionCount )
-//    console.log("this.state.web3.currentProvider: ", this.state.web3.currentProvider )
-    
 
     return (
       <div className="App">
@@ -344,9 +272,6 @@ updateBountyList(result) {
                 <br />
                 <b>Web3 Account: </b> {this.state.account}
                 <br />
-                <b>this.state.web3.currentProvider: </b> <stringify value={this.state.web3.currentProvider} />
-                <br />
-                
 
 
 

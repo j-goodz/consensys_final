@@ -21,7 +21,7 @@ class Submit extends Component {
 			this.props.bountyId, 
 			this.state.submission_text
 		)
-		console.log(newSubmission)
+		//console.log(newSubmission)
 		this.setState({ submission_text: '' })
 	}
 

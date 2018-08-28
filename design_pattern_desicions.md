@@ -1,9 +1,5 @@
 #### Smart contract storage design
 
-What other design patterns have you used / not used?
-■  	Why did you choose the patterns that you did?
-■  	Why not others?
-
 
 The below design for contract storage was chosen to allow flexibility while developing my contract as well as to keep things clearly defined. A single contract design was used to lower complexity and attackk surface. When a new bounty is created, bountyCount variable is increasd by 1, which acts as the index/mapping key for the BountyItem struct mapping since this data type does not support indexes. Each BountyItem has a nested mapping called HunterSubmission which contains all the submitted bounty hunter solutions for a BountyItem. Events automatically update the applications state to reflect things in real time. 
 
@@ -38,7 +34,16 @@ The below design for contract storage was chosen to allow flexibility while deve
 - Bounty Hunters cannot accept or reject solutions. Only the Bounty Poster can do this.
 
 
-#### Circuit breaker
+#### The Circuit Breaker or Emergency Stop Pattern
+
+This proect includes an emergency stop feature allowing the contract owner to pause function execution. This can be reverted once an risks to the contract or dApp ave been mitigaed.
+
+#### Library Usage
+
+Used Openzeppelin solidity in both contracts for ownership, whitelist, pasueability. Also have used SafeMath to make sure there wont be integer owerflows and underflows.
+
+
+#### Circuit breaker / emergency stop feature / contract execution pause
 
 This project a uses custom isStopped value check modifier that acts as circuit breaker / emergency stop. This feature is controlled by the contract owner and this owner is set on contract deployment. The following functions utilize this security feature:
 
@@ -72,6 +77,5 @@ stoppedInEmergency
 
 // Ensures onlly the contract owner can call functions with this modifier.
 onlyAuthorized
-
 
 

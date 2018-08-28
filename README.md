@@ -72,14 +72,26 @@ Then, open a new terminal window and compile and migrate the contracts using the
 Once the contracts have been compled and migrated, its time to open the front end UI. If it did not open automatically when running 'npm start', you can enter the url http://localhost:3000 into your browser to interact with the project front end.
 
 
-#### Testing process
+#### Using MyBounty dApp (for peer review)
 
-- Using your default Account 1 in Meta mask, create a new bounty postings.
-- Create a second account, Account 2, in Meta Mask and reload the MyBounty dApp (refresh browser @ http://localhost:3000) to ensure web3 picks up the new account.
-- Using Meta Mask Account 2, Create 2 new submissions for the bounty initially posted using Meta Mask Account 1. 
-- Swtich back to Meta Mask Account 1. You are not the bounty poster again and now have the authority to accept and reject submissions created with Acount 2.
-- Click on the posted bounty and reject the first submission. Notice the submission status changes and the bounty is still Open.
-- Now accept the second submission which will prompt you to pay out the bounty reward amount to the bounty hunter (Account 2). The bounty state should be set from Open to Closed and no more changes can be made to that bounty posting. 
+Because the MyBounty dApp restricts functions depending if a user is a bounty poster or bounty hunter, you will need to have two separate browsers running Meta Mask using a different account from the same seed provided by ganache-cli. There were issues observed while developing this dApp where Meta Mask intermittently experiences RPC errors which are unrecoverable, forcing the tester to restart the ganache-cli development blockchain each time it occurs which is less than ideal.
+
+Recommended browsers:
+Account 1 - Chrome - [Download here](https://www.google.ca/chrome/)
+Account 2 - Brave - [Download here](https://brave.com/download/)
+
+[You can also download Meta Mask here for each browser](https://metamask.io/)
+
+
+#### Example walkthrough of MyBounty dApp:
+
+Once you have your environment setup and you complee the steps in the Run a local development blockchain section, you can use the blow as a basic stepped approach to test MyBounty dApp.
+
+- First load the dApp @ http://localhost:3000.
+- Using the default Meta Mask Account 1 (Chrome), click "Post New Bounty" to create a new bounty posting. Only you can accept or reject submissions to this bounty.
+- Using Account 2 (Brave), navigate to the dApp homepage http://localhost:3000 and click one of the new bounties posted. 
+- Create a few new submissions for the bounty. Notice the UI updates by using events to sync the blockchain state to the UI state. Because this account did not create the bounty, you can only view the submissions after they are submitted.
+- Now using Account 1 (Chrome), review one of the posted submissions, either accepting or rejecting it. If you reject a submission, bounty hunters can still submit solutions. If you accept the submission as the bounty poster, the submission is accepted and you will be prompted to send the bounty reward transaction. Once accepted, the bounty state is set to Closed and the new submission form is disabled.
 
 
 #### Additional Information
