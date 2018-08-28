@@ -4,7 +4,7 @@
 The below design for contract storage was chosen to allow flexibility while developing my contract as well as to keep things clearly defined. A single contract design was used to lower complexity and attackk surface. When a new bounty is created, bountyCount variable is increasd by 1, which acts as the index/mapping key for the BountyItem struct mapping since this data type does not support indexes. Each BountyItem has a nested mapping called HunterSubmission which contains all the submitted bounty hunter solutions for a BountyItem. Events automatically update the applications state to reflect things in real time. 
 
 ```
-uint public bountyCount;                                    // Acs as index/key of struct mappings
+uint public bountyCount;                                    // Acts as index/key of struct mappings
 enum SubmissionStatus {Accepted, Rejected, PendingReview}   // Current status of a HunterSubmission.
 enum BountyState {Open, Closed}                             // Current state of a BountyItem.
  

@@ -9,6 +9,7 @@
 - No calling of external contracts occcurs in this project. This increases the security as no other controact takes over control flow. 
 
 - Added a default payable function to accept erroneous payments made to contract without calling a function:
+
 ```function() public payable {} Fallback function, which accepts ether when sent to contract```
 
 - All data is public allowing open access.
