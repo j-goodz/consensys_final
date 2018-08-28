@@ -77,7 +77,9 @@ Once the contracts have been compled and migrated, its time to open the front en
 Because the MyBounty dApp restricts functions depending if a user is a bounty poster or bounty hunter, you will need to have two separate browsers running Meta Mask using a different account from the same seed provided by ganache-cli. There were issues observed while developing this dApp where Meta Mask intermittently experiences RPC errors which are unrecoverable, forcing the tester to restart the ganache-cli development blockchain each time it occurs which is less than ideal.
 
 Recommended browsers:
+
 Account 1 - Chrome - [Download here](https://www.google.ca/chrome/)
+
 Account 2 - Brave - [Download here](https://brave.com/download/)
 
 [You can also download Meta Mask here for each browser](https://metamask.io/)
