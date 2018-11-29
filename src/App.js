@@ -73,43 +73,73 @@ updateBountyList(result) {
 
     CreateBounty (err, value) {
       let updateBountyList = this.state.bountyList
+      let existingHash = false
 
-      let verboseNewBounty = {
-        bountyId: value.args.bountyId.toNumber(),
-        bountyPoster: value.args.bountyPoster,
-        title: value.args.title,
-        description: value.args.description,
-        amount: value.args.amount.toNumber(),
-        state: value.args.state.toNumber(),
-        submissionCount: value.args.submissionCount.toNumber(),
-        submissions: []
+      for (let i = 0; i <= (updateBountyList.length-1); i++) {
+        if (value.transactionHash === updateBountyList[i].transactionHash) {
+          existingHash = true
+          console.log("CreateBounty dupe txHash found!")
+        } else {
+          if (existingHash === false && i === (updateBountyList.length-1)) {
+            let verboseNewBounty = {
+              bountyId: value.args.bountyId.toNumber(),
+              bountyPoster: value.args.bountyPoster,
+              title: value.args.title,
+              description: value.args.description,
+              amount: value.args.amount.toNumber(),
+              state: value.args.state.toNumber(),
+              submissionCount: value.args.submissionCount.toNumber(),
+              submissions: [],
+              txHash: value.transactionHash
+            }
+      
+            updateBountyList.push(verboseNewBounty)
+            this.setState({ bountyList: updateBountyList })
+            console.log("value: ", value)
+
+          }
+        }
+      
       }
 
-      updateBountyList.push(verboseNewBounty)
-      this.setState({ bountyList: updateBountyList })
     }
 
     CreateSubmission (err, value) {
-
+      let existingHash = false
+      let newHash = ''
       const updateBountyList = this.state.bountyList.map((bItem, index) => {
-          if ((index+1) === value.args.bountyId.toNumber()) { 
+        bItem.submissions.map((sItem) => {
+          console.log("sItem.txHash ", sItem.txHash)
+          console.log("value.transactionHash ", value.transactionHash)
+          // console.log("sItem ", sItem)
+          if (value.transactionHash === sItem.txnHash) {
+            console.log("CreateSubmission dupe txHash found!")
+            // existingHash = true
+            existingHash = true
+          }           
+        })
+        console.log("existingHash", existingHash)
 
-            const newSubmission = {
-              bountyId: value.args.bountyId.toNumber(),
-              submissionId: value.args.submissionId.toNumber(),
-              hunter: value.args.hunter,
-              body: value.args.body,
-              status: 2 // Penging Review status
-            }
+        if ((index+1) === value.args.bountyId.toNumber() && existingHash === false) { 
+        // if ((index+1) === value.args.bountyId.toNumber()) { 
+          const newSubmission = {
+            bountyId: value.args.bountyId.toNumber(),
+            submissionId: value.args.submissionId.toNumber(),
+            hunter: value.args.hunter,
+            body: value.args.body,
+            status: 2, // Penging Review status
+            txHash: value.transactionHash
+          }
 
-            const updateSubmissions = [...bItem.submissions, newSubmission]
-            
-            let newBItem = bItem
-            newBItem.submissionCount++
-            newBItem.submissions = updateSubmissions
-            return newBItem
-          } 
-          return bItem
+          const updateSubmissions = [...bItem.submissions, newSubmission]
+          
+          let newBItem = bItem
+          newBItem.submissionCount++
+          newBItem.submissions = updateSubmissions
+          console.log("CreateSubmission executed!")
+          // return newBItem
+        } 
+        return bItem
           
       })
 
