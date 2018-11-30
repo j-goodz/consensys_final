@@ -35,6 +35,7 @@ class App extends Component {
     this.AcceptSubmission = this.AcceptSubmission.bind(this)
     this.RejectSubmission = this.RejectSubmission.bind(this)
     this.instantiateContract = this.instantiateContract.bind(this)
+    this.initAccountUpdater = this.initAccountUpdater.bind(this)
   }
 
 updateBountyList(result) {
@@ -49,23 +50,24 @@ updateBountyList(result) {
 
       this.setState({ web3: results.web3 });
       this.instantiateContract();
-
-      // var account = this.web3.eth.accounts[0];
-      // this.accountInterval = setInterval(function() {
-      //   console.log("Current account: ", this.state.account)
-      //   if (this.web3.eth.accounts[0] !== account) {
-      //     account = this.web3.eth.accounts[0];
-      //     this.setState({ account: this.web3.eth.accounts[0] })
-
-      //   }
-      // }, 500);
-
+      this.initAccountUpdater();
 
     } catch (err) {
       console.log("Error finding web3.", err);
     }
   }
+  
 
+  initAccountUpdater() {
+    let accountInterval = setInterval(() => {
+      if (this.state.web3.eth.accounts[0] !== this.state.account) {
+        const newAccount = this.state.web3.eth.accounts[0]
+        this.setState({ account: newAccount })
+        }
+      }, 1000);
+  }
+
+    
   componentWillUnmount() {
     clearInterval(this.accountInterval)
 
