@@ -27,7 +27,8 @@ class App extends Component {
       bountyCount: null,
       myBountyInstance: null,
       bountyList: [],
-      events: null
+      events: null,
+      cbe: 0
     };
 
     this.CreateBounty = this.CreateBounty.bind(this)
@@ -99,29 +100,21 @@ updateBountyList(result) {
 
           }
         }
-      
       }
-
     }
 
     CreateSubmission (err, value) {
       let existingHash = false
-      let newHash = ''
+
       const updateBountyList = this.state.bountyList.map((bItem, index) => {
         bItem.submissions.map((sItem) => {
-          console.log("sItem.txHash ", sItem.txHash)
-          console.log("value.transactionHash ", value.transactionHash)
-          // console.log("sItem ", sItem)
-          if (value.transactionHash === sItem.txnHash) {
-            console.log("CreateSubmission dupe txHash found!")
-            // existingHash = true
+          if (sItem.txHash === value.transactionHash) {
+            // console.log("match found!")
             existingHash = true
-          }           
+          }
         })
-        console.log("existingHash", existingHash)
 
         if ((index+1) === value.args.bountyId.toNumber() && existingHash === false) { 
-        // if ((index+1) === value.args.bountyId.toNumber()) { 
           const newSubmission = {
             bountyId: value.args.bountyId.toNumber(),
             submissionId: value.args.submissionId.toNumber(),
@@ -136,7 +129,7 @@ updateBountyList(result) {
           let newBItem = bItem
           newBItem.submissionCount++
           newBItem.submissions = updateSubmissions
-          console.log("CreateSubmission executed!")
+          // console.log("CreateSubmission executed!")
           // return newBItem
         } 
         return bItem
