@@ -81,8 +81,8 @@ class NewBounty extends Component {
 						name="bounty_amount" 
 						value={this.state.bounty_amount} 
 						onChange={this.updateField} 
-						type="number"
-						maxLength="5"
+						// type="number"
+						// maxLength="5"
 						/>
 
 					<br /><br />
