@@ -17,11 +17,10 @@ class Submit extends Component {
 
 	handleSubmit(event) {
 		event.preventDefault();
-		const newSubmission = this.props.myBountyInstance.createSubmission(
+		this.props.myBountyInstance.createSubmission(
 			this.props.bountyId, 
 			this.state.submission_text
 		)
-		//console.log(newSubmission)
 		this.setState({ submission_text: '' })
 	}
 

@@ -24,17 +24,11 @@ class Bounty extends Component {
 		const submissionId = e.target.id 
 
 		if (e.target.value === 'Accept') {
-			const setSubmissionState = this.state.myBountyInstance.acceptSubmission(bountyId, submissionId)
+			this.state.myBountyInstance.acceptSubmission(bountyId, submissionId)
 			this.setState({ bountyState: 1 })
-			//console.log("setSubmissionState = ", setSubmissionState)	
 		} else if (e.target.value === 'Reject') {
-			const setSubmissionState = this.state.myBountyInstance.rejectSubmission(bountyId, submissionId)
-			//this.setState({ bountyState: 0 })
-			//console.log("setSubmissionState = ", setSubmissionState)	
+			this.state.myBountyInstance.rejectSubmission(bountyId, submissionId)
 		}
-		
-		// if (!setSubmissionState) {
-		// } 
 	}
 
 	render() {
@@ -82,7 +76,7 @@ class Bounty extends Component {
 							<br /><br />
 						</li> 
 					)
-		});	
+		})
 
     	return (
       		<div>
