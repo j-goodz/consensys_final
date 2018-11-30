@@ -3,7 +3,7 @@
 
 ### Getting Started
 
-This truffle project is a basic bounty board dApp where Bounty Posters can post a problem allowing bounty hunters to submit solutions. The bounty poster can review each submission and either accept or reject those submissions. If a submission is accepted, the bounty poster is then prompted to transfer the bounty reward amount to the bounty hunter before the submission is accepted and the bounty status closed. If a submission is rejected, the bounty atatus remains open and bounty hunters can continue to submit solutions. 
+This truffle project is a basic bounty board dApp where Bounty Posters can post a problem allowing bounty hunters to submit solutions. The bounty poster can review each submission and either accept or reject those submissions. If a submission is accepted, the bounty poster is then prompted to transfer the bounty reward amount to the bounty hunter before the submission is accepted and the bounty status closed. If a submission is rejected, the bounty status remains open and bounty hunters can continue to submit solutions. 
 
 Each Bounty Post contains the following details:
 
@@ -21,7 +21,7 @@ Each submission (nested within Bounty Posts) contains the following details:
 - Submission Status (Accepted, Rejected or Pending Review)
 
 
-### Setup
+### Local Setup
 
 Wondering how to set it up? There are two methods for getting started with this repo. Using git clone or manually download and extract the project zip.
 
@@ -72,9 +72,9 @@ Then, open a new terminal window and compile and migrate the contracts using the
 Once the contracts have been compled and migrated, its time to open the front end UI. If it did not open automatically when running 'npm start', you can enter the url http://localhost:3000 into your browser to interact with the project front end.
 
 
-#### Using MyBounty dApp (for peer review)
+#### Using MyBounty dApp
 
-Because the MyBounty dApp restricts functions depending if a user is a bounty poster or bounty hunter, you will need to have two separate browsers running Meta Mask using a different account from the same seed provided by ganache-cli. There were issues observed while developing this dApp where Meta Mask intermittently experiences RPC errors which are unrecoverable, forcing the tester to restart the ganache-cli development blockchain each time it occurs which is less than ideal.
+Because the MyBounty dApp restricts functions depending if a user is a bounty poster or bounty hunter, you will need to use two Meta Mask accounts or two separate browsers running Meta Mask with different accounts from the same seed provided by ganache-cli. 
 
 Recommended browsers:
 
@@ -91,9 +91,9 @@ Once you have your environment setup and you complete the steps in the 'Run a lo
 
 - First load the dApp @ http://localhost:3000.
 - Using the default Meta Mask Account 1 (Chrome), click "Post New Bounty" to create a new bounty posting. Only you (current account) can accept or reject submissions to this bounty.
-- Using Account 2 (Brave), navigate to the dApp homepage http://localhost:3000 and click one of the new bounties posted. 
+- Using Account 2, navigate to the dApp homepage http://localhost:3000 and click one of the new bounties posted. 
 - Create a few new submissions for the bounty. Notice the UI updates by using events to sync the blockchain state to the UI state. Because this account did not create the bounty, you can only view the submissions after they are submitted.
-- Now using Account 1 (Chrome), review one of the posted submissions, either accepting or rejecting it. If you reject a submission, bounty hunters can still submit solutions. If you accept the submission as the bounty poster, the submission is accepted and you will be prompted to send the bounty reward transaction. Once accepted, the bounty state is set to closed and the new submission form is disabled.
+- Now using Account 1, review one of the posted submissions, either accepting or rejecting it. If you reject a submission, bounty hunters can still submit solutions. If you accept the submission as the bounty poster, the submission is accepted and you will be prompted to send the bounty reward transaction. Once accepted, the bounty state is set to closed and the new submission form is disabled.
 
 
 #### Additional Information
