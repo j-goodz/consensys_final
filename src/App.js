@@ -10,6 +10,7 @@ import Bounty from "./components/bounty";
 import MyBounties from "./components/my-bounties";
 import MySubmissions from "./components/my-submissions";
 //import SubmissionList from "./components/submission-list";
+// import HDWalletProvider from 'truffle-hdwallet-provider';
 
 import "./css/oswald.css";
 import "./css/open-sans.css";
@@ -27,7 +28,8 @@ class App extends Component {
       bountyCount: null,
       myBountyInstance: null,
       bountyList: [],
-      events: null
+      events: null,
+      contractAddr: '0x401d199c88a16709339e2ed341e6b6730f459367'
     };
 
     this.CreateBounty = this.CreateBounty.bind(this)
@@ -179,7 +181,9 @@ updateBountyList(result) {
 
     this.state.web3.eth.getAccounts(async (error, accounts) => {
       try {
-        const myBountyInstance = await myBounty.deployed();
+
+        // const myBountyInstance = await myBounty.deployed(); // local code
+        const myBountyInstance = await myBounty.at(this.state.contractAddr);
 
         myBountyInstance.CreateBounty(this.CreateBounty)
         myBountyInstance.CreateSubmission(this.CreateSubmission)
