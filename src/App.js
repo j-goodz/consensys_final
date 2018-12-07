@@ -244,13 +244,13 @@ class App extends Component {
               <Link to="/" className="pure-menu-heading pure-menu-link">
                 Main Bounty Board
               </Link>
-              <Link   to="/my_bounties" className="pure-menu-heading pure-menu-link" >
+              <Link   to={process.env.PUBLIC_URL + '/my_bounties'} className="pure-menu-heading pure-menu-link" >
                 My Bounties
               </Link>
-              <Link to="/my_submissions" className="pure-menu-heading pure-menu-link" >
+              <Link to={process.env.PUBLIC_URL + '/my_submissions'} className="pure-menu-heading pure-menu-link" >
                 My Submissions
               </Link>
-              <Link to="/new_bounty" className="pure-menu-heading pure-menu-link" >
+              <Link to={process.env.PUBLIC_URL + '/new_bounty'} className="pure-menu-heading pure-menu-link" >
                 Post New Bounty
               </Link>
             </nav>

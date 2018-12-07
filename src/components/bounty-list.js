@@ -8,7 +8,7 @@ const BountyList = (props) => {
 		return ( 	
 					<li key={index}>
 						({index})&nbsp;
-						<Link to={`/bounty/${index}`} className="link" >
+						<Link to={process.env.PUBLIC_URL + `/bounty/${index}`} className="link" >
 							{bList.title} 
 						</Link>
 					</li> 
