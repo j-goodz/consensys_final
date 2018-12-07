@@ -241,7 +241,7 @@ class App extends Component {
         <BrowserRouter>
           <div>
             <nav className="navbar pure-menu pure-menu-horizontal">
-              <Link to="/" className="pure-menu-heading pure-menu-link">
+              <Link to={process.env.PUBLIC_URL + '/'} className="pure-menu-heading pure-menu-link">
                 Main Bounty Board
               </Link>
               <Link   to={process.env.PUBLIC_URL + '/my_bounties'} className="pure-menu-heading pure-menu-link" >
