@@ -26,7 +26,7 @@ class App extends Component {
       myBountyInstance: null,
       bountyList: [],
       events: null,
-      contractAddr: '0x401d199c88a16709339e2ed341e6b6730f459367'
+      contractAddr: '0x82c7280ea887088d4f4e23c815726d4482a58c9c'
     };
 
     this.CreateBounty = this.CreateBounty.bind(this)
