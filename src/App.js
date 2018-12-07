@@ -273,7 +273,7 @@ class App extends Component {
                 <Switch>
                   <Route 
                     exact  
-                    path="/my_bounties" 
+                    path={process.env.PUBLIC_URL + '/my_bounties'} 
                     render={() => <MyBounties 
                       bountyList={this.state.bountyList}
                       account={this.state.account} />} 
@@ -281,7 +281,7 @@ class App extends Component {
 
                   <Route 
                     exact 
-                    path="/my_submissions" 
+                    path={process.env.PUBLIC_URL + '/my_submissions'} 
                     render={() => (<MySubmissions 
                       bountyList={this.state.bountyList} 
                       bountyCount={this.state.bountyCount} 
@@ -290,7 +290,7 @@ class App extends Component {
 
                   <Route 
                     // exact  
-                    path="/bounty/:id"
+                    path={process.env.PUBLIC_URL + '/bounty/:id'}
                     render={({match}) => <Bounty 
                       state={this.state} 
                       myBountyInstance={this.state.myBountyInstance} 
@@ -300,16 +300,15 @@ class App extends Component {
 
                   <Route     
                     exact   
-                    path="/new_bounty" 
+                    path={process.env.PUBLIC_URL + '/new_bounty'} 
                     render={() => <NewBounty 
                       state={this.state} 
-                      // history={history}
                       />}
                   />
                   
                   <Route 
                     exact  
-                    path="/"
+                    path={process.env.PUBLIC_URL + '/'}
                     render={() => <BountyList 
                       bountyList={this.state.bountyList} />} 
                   />

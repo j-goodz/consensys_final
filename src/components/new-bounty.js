@@ -68,7 +68,7 @@ class NewBounty extends Component {
 	render() {
 		
 		if (this.state.submitStatus === true) {
-			return <Redirect from="/new_bounty" to="/" />
+			return <Redirect from={process.env.PUBLIC_URL + '/new_bounty'} to={process.env.PUBLIC_URL + '/'} />
 		}
 		
 		return (
