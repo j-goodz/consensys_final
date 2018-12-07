@@ -49,9 +49,9 @@ class Bounty extends Component {
 
 			return ( 	
 						<li key={index}>
-							<b>({index}) Bounty Hunter:</b><br />{sList.hunter} 
+							<b>({index}) Bounty Hunter:</b> {sList.hunter} 
 							<br />
-							<b>Submission Status:</b><br />{status}
+							<b>Submission Status:</b> {status}
 							<br />
 							<b>Proposed Solution:</b><br />{sList.body}
 							<br />

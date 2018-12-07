@@ -1,43 +1,49 @@
 import  React, { Component } from 'react';
+// import {Navigation} from 'react-router';
 // import { History } from "react-router-dom";
 // import { browserHistory } from 'react-router-dom'
-
-// import { withRouter } from "react-router-dom";
-
 // import Stringify from 'react-stringify'
 // import _ from 'lodash';
 // import { push } from 'react-router-redux'
 
+import {
+	// BrowserRouter as Router,
+	// Route,
+	// Link,
+	Redirect,
+	withRouter
+  } from "react-router-dom";
 
+  
 class NewBounty extends Component {
 	constructor(props){
 		super(props);
-
 		this.state = {
 			bounty_title: '',
       		bounty_description: '',
-     		bounty_amount: ''
+			bounty_amount: '',
+			submitStatus: false
 		}
-
 		this.handleSubmit=this.handleSubmit.bind(this)
 		this.updateField=this.updateField.bind(this)
+		// this.resetSubmitStatus=this.resetSubmitStatus.bind(this)
 	}
-
+	
 	updateField(event) {
 		this.setState({ [ event.target.name ]: event.target.value })
 	}
-
+	
 	async handleSubmit(event) {
 		event.preventDefault();
-
 		const web3 = this.props.state.web3
 		const accountAddr = this.props.state.web3.eth.accounts[0]
 		const title = this.state.bounty_title 
 		const description = this.state.bounty_description 
 		const amount = this.state.bounty_amount
-
-		//var callData = await this.props.state.myBountyInstance.createBounty(title, description, amount)
-		await this.props.state.myBountyInstance.createBounty(
+		
+		
+		// await 
+		this.props.state.myBountyInstance.createBounty(
 			title, 
 			description, 
 			amount, 
@@ -45,12 +51,26 @@ class NewBounty extends Component {
 				from: accountAddr,
 				value:  web3.toWei(this.state.bounty_amount, "ether")
 			}
-		)
+			)
+			
+			this.setState({ submitStatus: true })
+			// this.setState({ 
+			// 	bounty_title: '', 
+			// 	bounty_description: '', 
+			// 	bounty_amount: '' 
+			// })
+		}
 
-		window.location.replace("http://localhost:3000/")
-	}
+	// resetSubmitStatus() {
+	// 	this.setState({ submitStatus: false })
+	// }
 
 	render() {
+		
+		if (this.state.submitStatus === true) {
+			return <Redirect from="/new_bounty" to="/" />
+		}
+		
 		return (
 			<div>
 				<h1>New Bounty:</h1>
@@ -93,5 +113,4 @@ class NewBounty extends Component {
 	}
 };
 
-
-export default NewBounty;
+export default NewBounty

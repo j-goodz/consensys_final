@@ -3,15 +3,14 @@ import React from 'react';
 import { Link } from "react-router-dom";
 
 const BountyList = (props) => {
-	//console.log(props)
 	const bountyListItems = props.bountyList.map((bList) => {
 		let index = (props.bountyList.findIndex(k => k === bList) + 1)
 		return ( 	
 					<li key={index}>
 						({index})&nbsp;
 						<Link to={`/bounty/${index}`} className="link" >
-						{bList.title} 
-					</Link>
+							{bList.title} 
+						</Link>
 					</li> 
 				)
 	});
@@ -20,6 +19,7 @@ const BountyList = (props) => {
 		<div>
 			<h1>Bounty Board:</h1>
 			<ul>
+				{/* { bountyListItems !== null ? bountyListItems : <li>Loading...</li> } */}
 				{bountyListItems}
 			</ul>
 

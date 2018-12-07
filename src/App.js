@@ -9,8 +9,7 @@ import NewBounty from "./components/new-bounty";
 import Bounty from "./components/bounty";
 import MyBounties from "./components/my-bounties";
 import MySubmissions from "./components/my-submissions";
-//import SubmissionList from "./components/submission-list";
-// import HDWalletProvider from 'truffle-hdwallet-provider';
+import NotFound from "./components/not-found";
 
 import "./css/oswald.css";
 import "./css/open-sans.css";
@@ -20,11 +19,9 @@ import "./App.css";
 class App extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       web3: null,
       account: [], 
-      contractAddr: null,
       bountyCount: null,
       myBountyInstance: null,
       bountyList: [],
@@ -40,26 +37,17 @@ class App extends Component {
     this.initAccountUpdater = this.initAccountUpdater.bind(this)
   }
 
-updateBountyList(result) {
-}
-
-  // async componentWillMount() {
   async componentDidMount() {
     try {
-      //console.log("componentWillMount");
       const results = await getWeb3;
-      //console.log("results = ", results);
-
       this.setState({ web3: results.web3 });
       this.instantiateContract();
       this.initAccountUpdater();
-
     } catch (err) {
       console.log("Error finding web3.", err);
     }
   }
   
-
   initAccountUpdater() {
     let accountInterval = setInterval(() => {
       if (this.state.web3.eth.accounts[0] !== this.state.account) {
@@ -68,11 +56,9 @@ updateBountyList(result) {
         }
       }, 1000);
   }
-
-    
+  
   componentWillUnmount() {
     clearInterval(this.accountInterval)
-
   }
 
     CreateBounty (err, value) {
@@ -80,39 +66,33 @@ updateBountyList(result) {
       let existingHash = false
 
       for (let i = 0; i <= (updateBountyList.length-1); i++) {
-        if (value.transactionHash === updateBountyList[i].transactionHash) {
+        if (updateBountyList[i].txHash === value.transactionHash) {
           existingHash = true
-          console.log("CreateBounty dupe txHash found!")
-        } else {
-          if (existingHash === false && i === (updateBountyList.length-1)) {
-            let verboseNewBounty = {
-              bountyId: value.args.bountyId.toNumber(),
-              bountyPoster: value.args.bountyPoster,
-              title: value.args.title,
-              description: value.args.description,
-              amount: value.args.amount.toNumber(),
-              state: value.args.state.toNumber(),
-              submissionCount: value.args.submissionCount.toNumber(),
-              submissions: [],
-              txHash: value.transactionHash
-            }
-      
-            updateBountyList.push(verboseNewBounty)
-            this.setState({ bountyList: updateBountyList })
-            console.log("value: ", value)
-
-          }
         }
+      }
+
+      if (existingHash === false) {
+        let verboseNewBounty = {
+          bountyId: value.args.bountyId.toNumber(),
+          bountyPoster: value.args.bountyPoster,
+          title: value.args.title,
+          description: value.args.description,
+          amount: value.args.amount.toNumber(),
+          state: value.args.state.toNumber(),
+          submissionCount: value.args.submissionCount.toNumber(),
+          submissions: [],
+          txHash: value.transactionHash
+        }
+        updateBountyList.push(verboseNewBounty)
+        this.setState({ bountyList: updateBountyList })
       }
     }
 
     CreateSubmission (err, value) {
       let existingHash = false
-
       const updateBountyList = this.state.bountyList.map((bItem, index) => {
         bItem.submissions.map((sItem) => {
           if (sItem.txHash === value.transactionHash) {
-            // console.log("match found!")
             existingHash = true
           }
         })
@@ -126,25 +106,18 @@ updateBountyList(result) {
             status: 2, // Penging Review status
             txHash: value.transactionHash
           }
-
-          const updateSubmissions = [...bItem.submissions, newSubmission]
-          
+          const updateSubmissions = [...bItem.submissions, newSubmission]          
           let newBItem = bItem
           newBItem.submissionCount++
           newBItem.submissions = updateSubmissions
-          // console.log("CreateSubmission executed!")
-          // return newBItem
-        } 
-        return bItem
           
+        } 
+        return bItem          
       })
-
-      //console.log("newSubmission updateBountyList: ", updateBountyList)
       this.setState({ bountyList: updateBountyList })
     }
 
     AcceptSubmission (err, value) {
-
       const updateBountyList = this.state.bountyList.map((bItem, index) => {
           if ((index+1) === value.args.bountyId.toNumber()) { 
             const updateSubmissions = bItem.submissions.map((sItem) => {
@@ -162,13 +135,10 @@ updateBountyList(result) {
             })
             bItem.submissions = updateSubmissions
             bItem.state = 1
-
             return bItem
           } 
-
       })
       this.setState({ bountyList: updateBountyList })
-
     }
     
     RejectSubmission (err, value) {
@@ -196,19 +166,14 @@ updateBountyList(result) {
       this.setState({ bountyList: updateBountyList })
     }
     
-
-
   instantiateContract() {
     const contract = require("truffle-contract");
     const myBounty = contract(myBountyContractABI);
     myBounty.setProvider(this.state.web3.currentProvider);
-
     this.state.web3.eth.getAccounts(async (error, accounts) => {
       try {
-
         // const myBountyInstance = await myBounty.deployed(); // local code
         const myBountyInstance = await myBounty.at(this.state.contractAddr);
-
         myBountyInstance.CreateBounty(this.CreateBounty)
         myBountyInstance.CreateSubmission(this.CreateSubmission)
         myBountyInstance.RejectSubmission(this.RejectSubmission)
@@ -270,10 +235,7 @@ updateBountyList(result) {
 
 
   render() {
-    //console.log("state: ", this.state )
-
     if (this.state.web3 === null ) return <div>Loading...</div> 
-
     return (
       <div className="App">
         <BrowserRouter>
@@ -300,9 +262,11 @@ updateBountyList(result) {
                 <br />
                 <b>Web3 Account: </b> {this.state.account}
                 <br />
-
-
-
+                <p>** Bounty Posters and Bounty Hunters are identified by MetaMask accounts. 
+				          Please ensure you have MetaMast installed and test Ether on the Ropsten Test Net (test Ether can by obtained from the <a href="https://faucet.metamask.io/" target="MM_facet">MetaMask Faucet</a>). 
+				          Transactions generally take up to 30 seconds to appear due to the Ropsten Testnet block time. 
+                  To submit a solution you must be using an account other than the Poster account. Only Bounty Posters can accept or reject submissions.
+                </p>
                 <hr />
               </div>
               <div>
@@ -315,7 +279,6 @@ updateBountyList(result) {
                       account={this.state.account} />} 
                   />
 
-
                   <Route 
                     exact 
                     path="/my_submissions" 
@@ -325,9 +288,8 @@ updateBountyList(result) {
                       account={this.state.account} />)}
                   />
 
-
                   <Route 
-                    exact  
+                    // exact  
                     path="/bounty/:id"
                     render={({match}) => <Bounty 
                       state={this.state} 
@@ -336,24 +298,22 @@ updateBountyList(result) {
                       account={this.state.account} />} 
                   />
 
-
-                  <Route        
+                  <Route     
+                    exact   
                     path="/new_bounty" 
                     render={() => <NewBounty 
                       state={this.state} 
-                      //history=
+                      // history={history}
                       />}
                   />
                   
-
                   <Route 
                     exact  
-                    path=""
+                    path="/"
                     render={() => <BountyList 
                       bountyList={this.state.bountyList} />} 
                   />
-
-
+                  <Route path="*" component={NotFound} /> 
                 </Switch>
               </div>
             </main>

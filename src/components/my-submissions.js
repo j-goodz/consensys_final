@@ -16,11 +16,11 @@ class MySubmissions extends Component {
 
 				return (
 						<li key={sub.bountyId+sIndex}>
-							<b>Bounty ID:</b><br />{sub.bountyId} 
+							<b>Bounty ID:</b> {sub.bountyId} 
 							<br />
-							<b>Submission ID:</b><br />{sub.submissionId} 
+							<b>Submission ID:</b> {sub.submissionId} 
 							<br />
-							<b>Submission Status:</b><br />{status}
+							<b>Submission Status:</b> {status}
 							<br />
 							<b>Proposed Solution:</b><br />{sub.body}
 							<br /><br />
