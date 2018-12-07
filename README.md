@@ -2,7 +2,7 @@
 
 ## Demo ##
 
-This Projected is hosted with GitHub pages and can be found here https://jgoodz.github.io/consensys_final/
+This project is hosted with GitHub pages and can be found here https://jgoodz.github.io/consensys_final/
 
 
 ## Deployed Environment ##
