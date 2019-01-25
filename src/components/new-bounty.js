@@ -1,17 +1,15 @@
 import  React, { Component } from 'react';
-// import {Navigation} from 'react-router';
-// import { History } from "react-router-dom";
-// import { browserHistory } from 'react-router-dom'
 // import Stringify from 'react-stringify'
-// import _ from 'lodash';
-// import { push } from 'react-router-redux'
 
 import {
 	// BrowserRouter as Router,
 	// Route,
+	// browserHistory
+	// History
 	// Link,
+	// push
 	Redirect,
-	withRouter
+	// withRouter
   } from "react-router-dom";
 
   
@@ -22,7 +20,8 @@ class NewBounty extends Component {
 			bounty_title: '',
       		bounty_description: '',
 			bounty_amount: '',
-			submitStatus: false
+			submitStatus: false,
+			account: this.props.account
 		}
 		this.handleSubmit=this.handleSubmit.bind(this)
 		this.updateField=this.updateField.bind(this)
